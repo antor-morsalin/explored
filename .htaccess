@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteBase /explored/
+RewriteRule ^ public/index.php [L]
