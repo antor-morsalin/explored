@@ -12,9 +12,13 @@
         {
             $this -> conn = $conn;
         }
-        public function register()
+        public function register(string $username, string $password)
         {
-            echo "registration Completed";
+            $statement = $this->conn->prepare(
+                "INSERT INTO users (username, password) VALUES (?, ?)"
+            );
+            $statement->bind_param("ss", $username, $password);
+            $statement->execute();
         }
     }
 

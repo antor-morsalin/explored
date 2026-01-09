@@ -19,7 +19,7 @@
         {
             // I wonder ekhane middleware gula boshabo naki
             $this -> view -> addData('title', 'Home Page');
-            echo $this -> view -> render("index.php", ['name' => 'Antor', 'age' => 23]);
+            echo $this -> view -> render("index.php");
         }
 
     }

@@ -10,7 +10,6 @@
 
     use Framework\App;
     use App\Controllers\{HomeController, AuthController};
-    use App\Model\Database;
 
     $app = new App();
 

@@ -34,8 +34,11 @@
 
         public function register()
         {
-            $this -> userModel -> register();
-            dd($_POST);
+            $this -> userModel -> register($_POST['username'], $_POST['password']);
+            setAuth('role', 'user');
+            setAuth('user', $_POST['username']);
+            setFlash('message', "Welcome to Explored {$_POST['username']}");
+            redirect("/explored");
         }
 
         public function loginView()
