@@ -6,16 +6,23 @@
 
     use Framework\TemplateEngine;
     use App\Middlewares\AuthMiddleware;
+    use App\Model\{Database, UserModel};
 
     class AuthController
     {   
         private TemplateEngine $view ;  
         private AuthMiddleware $authMiddleware;
+        private Database $db;
+        Private UserModel $userModel;
         
         public function __construct()
         {
             $this -> view = new TemplateEngine(__DIR__."/../views");
             $this -> authMiddleware = new AuthMiddleware();
+
+            $this -> db = new Database();
+            $conn = $this -> db -> connection();
+            $this -> userModel = new UserModel($conn);
         }
 
         public function registerView()
@@ -27,6 +34,7 @@
 
         public function register()
         {
+            $this -> userModel -> register();
             dd($_POST);
         }
 

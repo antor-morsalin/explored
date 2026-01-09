@@ -6,14 +6,15 @@
     session_start();
 
     include __DIR__."/../src/App/functions.php";
-
     require __DIR__ . "/../vendor/autoload.php";
 
     use Framework\App;
     use App\Controllers\{HomeController, AuthController};
+    use App\Model\Database;
 
     $app = new App();
 
+    // Registering routes
     $app -> get('/explored', [HomeController::class, 'home']);
 
     $app -> get('/explored/register', [AuthController::class, 'registerView']);
