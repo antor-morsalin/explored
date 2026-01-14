@@ -18,12 +18,12 @@
 
     $app -> get('/explored/login', [AuthController::class, 'loginView']);
     $app -> post('/explored/login', [AuthController::class, 'login']);
-    $app -> get('explored/terms-and-conditions', [AuthController::class, 'termsAndConditionsView']);
+    
+    // Fixed path with leading slash
+    $app -> get('/explored/terms-and-conditions', [AuthController::class, 'termsAndConditionsView']);
+
+    // ✨ NEW: AJAX Route
+    $app -> get('/explored/api/check-username', [AuthController::class, 'checkUsername']);
 
     $app->run();
-
-
-    //($app);
-
-
 ?>

@@ -10,7 +10,7 @@
 
     class AuthController
     {   
-        private TemplateEngine $view ;  
+        private TemplateEngine $view;  
         private AuthMiddleware $authMiddleware;
         private Database $db;
         private UserModel $userModel;
@@ -27,7 +27,6 @@
 
         public function registerView()
         {
-            // I wonder ekhane middleware gula boshabo naki
             $this -> view -> addData('title', 'Registration');
             echo $this -> view -> render("register.php");
         }
@@ -43,7 +42,6 @@
 
         public function loginView()
         {
-            // I wonder ekhane middleware gula boshabo naki
             $this -> view -> addData('title', 'Login');
             echo $this -> view -> render("login.php");
         }
@@ -70,11 +68,15 @@
             $this -> view -> addData('title', 'Terms and Conditions');
             echo $this -> view -> render("terms-and-conditions.php");
         }
-
-
-
-
+        
+        public function checkUsername()
+        {
+            $username = $_GET['username'] ?? '';
+            $exists = $this->userModel->usernameExists($username);
+            
+            header('Content-Type: application/json');
+            echo json_encode(['available' => !$exists]);
+            exit;
+        }
     }
-
-
 ?>

@@ -55,13 +55,13 @@
     </div>
 
     <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700">
-      <a href="/exploreddddd" class="hover:text-slate-900 transition">Home</a>
+      <a href="/explored/" class="hover:text-slate-900 transition">Home</a>
       <a href="#" class="hover:text-slate-900 transition">Logs</a>
       <a href="#" class="hover:text-slate-900 transition">Explore</a>
     </div>
 
     <a
-      href="/exploreddddd/login"
+      href="/explored/login"
       class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 active:bg-slate-950 transition"
     >
       Login

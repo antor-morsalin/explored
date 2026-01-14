@@ -12,6 +12,7 @@
         {
             $this -> conn = $conn;
         }
+
         public function register(string $username, string $password)
         {
             $statement = $this->conn->prepare(
@@ -20,6 +21,7 @@
             $statement->bind_param("ss", $username, $password);
             $statement->execute();
         }
+
         public function login(string $username, string $password)
         {
             $statement = $this->conn->prepare(
@@ -35,6 +37,15 @@
 
             return false;
         }
+        
+        public function usernameExists(string $username): bool
+        {
+            $statement = $this->conn->prepare("SELECT id FROM users WHERE username = ?");
+            $statement->bind_param("s", $username);
+            $statement->execute();
+            $statement->store_result();
+            return $statement->num_rows > 0;
+        }
     }
-
+// No closing tag
 ?>

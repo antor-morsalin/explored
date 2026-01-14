@@ -10,18 +10,26 @@
     <form action="/explored/register" method="POST" onsubmit="return validateRegisterForm()" class="mt-6 space-y-4" novalidate>
       <div>
         <label for="username" class="block text-sm font-medium text-slate-700">Username</label>
-        <input
-          id="username"
-          name="username"
-          type="text"
-          required
-          minlength="3"
-          maxlength="30"
-          autocomplete="username"
-          placeholder="e.g., jannatmim"
-          class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition-all focus:ring-4 focus:ring-slate-200 focus:border-slate-400"
-        />
+        <div class="relative">
+            <input
+              id="username"
+              name="username"
+              type="text"
+              required
+              minlength="3"
+              maxlength="30"
+              placeholder="e.g., Kazi Irfan"
+              class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition-all focus:ring-4 focus:ring-slate-200 focus:border-slate-400"
+            />
+            <div id="username-spinner" class="absolute right-3 top-3.5 hidden">
+                <svg class="animate-spin h-4 w-4 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+        </div>
         <p id="username-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        <p id="username-success" class="mt-1 text-xs text-green-600 hidden">Username is available!</p>
       </div>
 
       <div>
@@ -71,7 +79,8 @@
 
       <button
         type="submit"
-        class="w-full rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 active:bg-slate-950 transition-colors"
+        id="submit-btn"
+        class="w-full rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 active:bg-slate-950 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Register
       </button>
@@ -87,39 +96,80 @@
 </main>
 
 <script>
+  let isUsernameAvailable = false;
+  let debounceTimer; // debouncing
+
+  const usernameInput = document.getElementById('username');
+  const usernameError = document.getElementById('username-error');
+  const usernameSuccess = document.getElementById('username-success');
+  const spinner = document.getElementById('username-spinner');
+  const submitBtn = document.getElementById('submit-btn');
+  
+  usernameInput.addEventListener('input', function() {
+      const username = this.value.trim();
+
+      // 1. Clear previous timer
+      clearTimeout(debounceTimer);
+
+      // 2. Clear UI states immediately while typing
+      usernameError.classList.add('hidden');
+      usernameSuccess.classList.add('hidden');
+      this.classList.remove('border-red-500', 'focus:ring-red-100', 'border-green-500', 'focus:ring-green-100');
+      
+      
+      if (username.length < 3) {
+          isUsernameAvailable = false;
+          return; 
+      }
+      
+      spinner.classList.remove('hidden');
+
+      // 3. Set a new timer to fetch data after 500ms of inactivity
+      debounceTimer = setTimeout(async () => {
+          try {
+              const response = await fetch(`/explored/api/check-username?username=${encodeURIComponent(username)}`);
+              const data = await response.json();
+
+              spinner.classList.add('hidden'); // Hide spinner
+
+              if (data.available) {
+                  isUsernameAvailable = true;
+                  usernameSuccess.classList.remove('hidden');
+                  this.classList.add('border-green-500', 'focus:ring-green-100');
+                  submitBtn.disabled = false;
+              } else {
+                  isUsernameAvailable = false;
+                  usernameError.textContent = 'This username is already taken.';
+                  usernameError.classList.remove('hidden');
+                  this.classList.add('border-red-500', 'focus:ring-red-100');
+                  submitBtn.disabled = true;
+              }
+
+          } catch (error) {
+              console.error('Error checking username:', error);
+              spinner.classList.add('hidden');
+          }
+      }, 500); 
+  });
+
   function validateRegisterForm() {
-    // Get Inputs
-    const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const confirmInput = document.getElementById('confirm_password');
     const termsInput = document.getElementById('terms');
     
-    // Get Error placeholders
-    const userError = document.getElementById('username-error');
     const passError = document.getElementById('password-error');
     const confirmError = document.getElementById('confirm-error');
     
     let isValid = true;
 
-    // Reset styles and hide errors
-    userError.classList.add('hidden');
     passError.classList.add('hidden');
     confirmError.classList.add('hidden');
 
-    [usernameInput, passwordInput, confirmInput].forEach(input => {
+    [passwordInput, confirmInput].forEach(input => {
         input.classList.remove('border-red-500', 'focus:ring-red-100');
         input.classList.add('border-slate-300', 'focus:ring-slate-200');
     });
-
-    // 1. Username Validation
-    if (usernameInput.value.trim().length < 3) {
-      userError.textContent = 'Username must be at least 3 characters.';
-      userError.classList.remove('hidden');
-      usernameInput.classList.add('border-red-500', 'focus:ring-red-100');
-      isValid = false;
-    }
-
-    // 2. Password Length Validation
+    
     if (passwordInput.value.length < 8) {
       passError.textContent = 'Password must be at least 8 characters.';
       passError.classList.remove('hidden');
@@ -127,17 +177,14 @@
       isValid = false;
     }
 
-    // 3. Confirm Password Match Validation
     if (confirmInput.value !== passwordInput.value) {
       confirmError.textContent = 'Passwords do not match.';
       confirmError.classList.remove('hidden');
       confirmInput.classList.add('border-red-500', 'focus:ring-red-100');
-      // Optionally highlight the main password field too so user sees both need attention
       passwordInput.classList.add('border-red-500', 'focus:ring-red-100'); 
       isValid = false;
     }
 
-    // 4. Terms Validation
     if (!termsInput.checked) {
        isValid = false;
        alert("You must agree to the terms and conditions to register.");
