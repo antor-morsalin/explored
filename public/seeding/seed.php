@@ -10,6 +10,7 @@ $conn->query("CREATE DATABASE IF NOT EXISTS explored");
 $conn->set_charset("utf8mb4");
 
 
+
 $conn -> select_db("explored");
 
 $conn->query("DROP TABLE IF EXISTS users");

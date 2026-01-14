@@ -1,9 +1,11 @@
 <?php
 
     namespace App\Middlewares;
-
+    use App\Model\UserModel;
     class AuthMiddleware
     {
+        
+        
         public function validateRegistrationData()
         {
 
@@ -17,6 +19,8 @@
                 redirect("/expense-tracker/login");
             }
         }
+
+        
     }
 
 ?>

@@ -1,7 +1,4 @@
 <?php
-    // View folder er shob design apadoot mockup, oita akdom e final design na, just 
-    // backend kaj kore kina sheta dekhar jonne oi template use kora. shob abar 
-    // design korte hobe
     declare(strict_types=1);
     session_start();
 
@@ -21,7 +18,7 @@
 
     $app -> get('/explored/login', [AuthController::class, 'loginView']);
     $app -> post('/explored/login', [AuthController::class, 'login']);
-    
+    $app -> get('explored/terms-and-conditions', [AuthController::class, 'termsAndConditionsView']);
 
     $app->run();
 

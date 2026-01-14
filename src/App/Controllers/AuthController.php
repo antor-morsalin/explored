@@ -13,7 +13,7 @@
         private TemplateEngine $view ;  
         private AuthMiddleware $authMiddleware;
         private Database $db;
-        Private UserModel $userModel;
+        private UserModel $userModel;
         
         public function __construct()
         {
@@ -50,11 +50,30 @@
 
         public function login()
         {
-            $this -> authMiddleware -> validateLogindata();
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            $valid = $this -> userModel -> login($username, $password);
+
+            if(!$valid) {
+                setFlash('message', "Invalid username or password");
+                redirect("/explored/login");
+            }
+
             setFlash('message', "Welcome back {$_POST['username']}") ;
             setAuth('user', $_POST['username']);
+            setAuth('role', 'user');
             redirect("/explored");
         }
+
+        public function termsAndConditionsView() {
+            $this -> view -> addData('title', 'Terms and Conditions');
+            echo $this -> view -> render("terms-and-conditions.php");
+        }
+
+
+
+
     }
 
 

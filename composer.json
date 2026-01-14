@@ -1,21 +1,21 @@
 {
-    "name": "antor/explored",
-    "description": "Practice php backend",
-    "autoload": {
-        "psr-4": {
-            "Framework\\": "src/Framework",
-            "App\\": "src/App"
-        }
+  "name": "antor/explored",
+  "description": "Explored",
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "src/Framework",
+      "App\\": "src/App"
+    }
+  },
+  "authors": [
+    {
+      "name": "Mahmudul Morsalin Antor",
+      "email": "antor.morsalin68@gmail.com"
     },
-    "authors": [
-        {
-            "name": "Mahmudul Morsalin Antor",
-            "email": "antor.morsalin68@gmail.com"
-        },
-        {
-            "name": "Kazi Irfanul Islam",
-            "email": "irfanulislam01851@gmail.com"
-        }
-    ],
-    "require": {}
+    {
+      "name": "Kazi Irfanul Islam",
+      "email": "irfanulislam01851@gmail.com"
+    }
+  ],
+  "require": {}
 }

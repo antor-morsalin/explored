@@ -20,6 +20,21 @@
             $statement->bind_param("ss", $username, $password);
             $statement->execute();
         }
+        public function login(string $username, string $password)
+        {
+            $statement = $this->conn->prepare(
+                "SELECT * FROM users WHERE username = ? AND password = ?"
+            );
+            $statement->bind_param("ss", $username, $password);
+            $statement->execute();
+            $result = $statement->get_result();
+
+            if ($result->num_rows === 1) {
+                return true;
+            }
+
+            return false;
+        }
     }
 
 ?>

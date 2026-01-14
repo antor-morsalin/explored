@@ -13,7 +13,7 @@
         <a href="#" class="hover:text-slate-900 transition">About</a>
         <a href="#" class="hover:text-slate-900 transition">Contact</a>
         <a href="#" class="hover:text-slate-900 transition">Privacy</a>
-        <a href="#" class="hover:text-slate-900 transition">Terms</a>
+        <a href="/explored/terms-and-conditions" class="hover:text-slate-900 transition">Terms</a>
       </div>
 
     </div>
@@ -23,6 +23,76 @@
     © 2025 Explored. All rights reserved.
   </div>
 </footer>
+
+<div id="page-loader" class="loader-overlay" style="display: none;">
+    <div class="loader"></div>
+</div>
+
+<script>
+  // --- Flash Message Timeout Script ---
+  const message = document.getElementById('message');
+  const error = document.getElementById('error');
+  const success = document.getElementById('success');
+  
+  if(message || error || success) {
+      setTimeout(() => {
+        if(message) message.remove();
+        if(error) error.remove();
+        if(success) success.remove();
+      }, 10000);
+  }
+
+  // --- Page Loader Script ---
+  document.addEventListener("DOMContentLoaded", function() {
+      const loader = document.getElementById('page-loader');
+
+      function showLoader() {
+          loader.style.display = 'flex';
+      }
+
+      function hideLoader() {
+          loader.style.display = 'none';
+      }
+
+      // Click listener for links
+      document.addEventListener('click', function(event) {
+          const link = event.target.closest('a');
+          if (link) {
+              const href = link.getAttribute('href');
+              const target = link.getAttribute('target');
+              
+              // Logic: Only show loader for actual internal navigation
+              if (
+                  target !== '_blank' && 
+                  href && 
+                  !href.startsWith('#') && 
+                  !href.startsWith('javascript') && 
+                  !event.ctrlKey && 
+                  !event.metaKey
+              ) {
+                  showLoader();
+              }
+          }
+      });
+
+      // Submit listener for forms
+      document.addEventListener('submit', function(event) {
+          // FIX: If client-side validation failed, event.defaultPrevented will be true.
+          // In that case, we simply return and do NOT show the loader.
+          if (event.defaultPrevented) {
+              return;
+          }
+          showLoader();
+      });
+
+      // Fix for browser "Back" button
+      window.addEventListener('pageshow', function(event) {
+          if (event.persisted) {
+              hideLoader();
+          }
+      });
+  });
+</script>
 
 </body>
 </html>
