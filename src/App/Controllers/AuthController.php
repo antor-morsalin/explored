@@ -64,10 +64,17 @@
             redirect("/explored");
         }
 
+        public function privacyPolicyView() {
+        $this->view->addData('title', 'Privacy Policy');
+        echo $this->view->render("privacy-policy.php");
+        }
+
         public function termsAndConditionsView() {
             $this -> view -> addData('title', 'Terms and Conditions');
             echo $this -> view -> render("terms-and-conditions.php");
         }
+
+        
         
         public function checkUsername()
         {

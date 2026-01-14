@@ -51,7 +51,7 @@
 
   <nav class="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200 sticky top-0 z-50">
     <div class="text-xl font-bold tracking-tight text-slate-900">
-      Explored
+      <a href="/explored/">Explored</a>
     </div>
 
     <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700">

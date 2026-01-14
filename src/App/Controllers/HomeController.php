@@ -22,6 +22,13 @@
             echo $this -> view -> render("index.php");
         }
 
+        public function contactView()
+        {
+            $this -> view -> addData('title', 'Contact Us');
+            echo $this -> view -> render("contact.php");
+        }
+
+        
     }
 
 

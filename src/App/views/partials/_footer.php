@@ -10,10 +10,10 @@
       </div>
 
       <div class="flex flex-wrap gap-6 text-sm font-medium text-slate-600">
-        <a href="#" class="hover:text-slate-900 transition">About</a>
-        <a href="#" class="hover:text-slate-900 transition">Contact</a>
-        <a href="#" class="hover:text-slate-900 transition">Privacy</a>
-        <a href="/explored/terms-and-conditions" class="hover:text-slate-900 transition">Terms</a>
+        <a href="#" class="hover:text-slate-900 transition">About Us</a>
+        <a href="/explored/contact" class="hover:text-slate-900 transition">Contact Us</a>
+        <a href="/explored/privacy-policy" class="hover:text-slate-900 transition">Privacy Policy</a>
+        <a href="/explored/terms-and-conditions" class="hover:text-slate-900 transition">Terms and Conditions</a>
       </div>
 
     </div>
@@ -29,7 +29,7 @@
 </div>
 
 <script>
-  // --- Flash Message Timeout Script ---
+
   const message = document.getElementById('message');
   const error = document.getElementById('error');
   const success = document.getElementById('success');
@@ -42,7 +42,7 @@
       }, 10000);
   }
 
-  // --- Page Loader Script ---
+  
   document.addEventListener("DOMContentLoaded", function() {
       const loader = document.getElementById('page-loader');
 
@@ -54,14 +54,14 @@
           loader.style.display = 'none';
       }
 
-      // Click listener for links
+      
       document.addEventListener('click', function(event) {
           const link = event.target.closest('a');
           if (link) {
               const href = link.getAttribute('href');
               const target = link.getAttribute('target');
               
-              // Logic: Only show loader for actual internal navigation
+              
               if (
                   target !== '_blank' && 
                   href && 
@@ -75,17 +75,16 @@
           }
       });
 
-      // Submit listener for forms
+      
       document.addEventListener('submit', function(event) {
-          // FIX: If client-side validation failed, event.defaultPrevented will be true.
-          // In that case, we simply return and do NOT show the loader.
+        
           if (event.defaultPrevented) {
               return;
           }
           showLoader();
       });
 
-      // Fix for browser "Back" button
+      
       window.addEventListener('pageshow', function(event) {
           if (event.persisted) {
               hideLoader();
