@@ -1,10 +1,10 @@
 <?php
 
 $users = [
-    ["antor", "dev"],
-    ["payel", "dev"],
-    ["morsalin", "sillyBird"],
-    ["irfan", "bigSillyBird"],
+    ["antor", "dev", "admin"],
+    ["irfan", "bigSillyBird", "admin"],
+    ["payel", "dev", "user"],
+    ["morsalin", "sillyBird", "user"],
 ];
 
 $contact_messages = [

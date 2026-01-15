@@ -6,7 +6,7 @@
     require __DIR__ . "/../vendor/autoload.php";
 
     use Framework\App;
-    use App\Controllers\{HomeController, AuthController};
+    use App\Controllers\{HomeController, AuthController, AdminController};
 
     $app = new App();
 
@@ -27,5 +27,8 @@
 
     $app -> get('/explored/api/check-username', [AuthController::class, 'checkUsername']);
 
+
+    $app -> get('/explored/admin/dashboard', [AdminController::class, 'dashboard']);
+    $app -> get('/explored/admin/messages', [AdminController::class, 'messages']);
     $app->run();
 ?>

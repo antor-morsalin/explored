@@ -4,19 +4,20 @@
     use App\Model\UserModel;
     class AuthMiddleware
     {
-        
-        
-        public function validateRegistrationData()
+        public function requireLogin()
         {
-
+            if (!isLoggedIn()) {
+                redirect("/explored/login");
+            }
         }
-        public function validateLogindata()
+        
+        public function requireAdmin()
         {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            if($username !== "antorKun" || $password !== "sillyGoober")
-            {
-                redirect("/expense-tracker/login");
+            $this->requireLogin();
+
+            if ($_SESSION['auth']['role'] !== 'admin') {
+                setFlash('message', "You don't have permission to access this page.");
+                redirect("/explored");
             }
         }
 

@@ -32,7 +32,7 @@
             $result = $statement->get_result();
 
             if ($result->num_rows === 1) {
-                return true;
+                return $result->fetch_assoc();
             }
 
             return false;
@@ -45,6 +45,14 @@
             $statement->execute();
             $statement->store_result();
             return $statement->num_rows > 0;
+        }
+
+
+        public function countAll(): int
+        {
+            $sql = "SELECT COUNT(*) as total FROM users";
+            $result = $this->conn->query($sql);
+            return (int) $result->fetch_assoc()['total'];
         }
     }
 // No closing tag

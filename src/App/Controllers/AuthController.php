@@ -36,8 +36,8 @@
             $this -> userModel -> register($_POST['username'], $_POST['password']);
             setAuth('role', 'user');
             setAuth('user', $_POST['username']);
-            setFlash('message', "Welcome to Explored {$_POST['username']}");
-            redirect("/explored");
+            setFlash('message', "Welcome {$_POST['username']}, login to Explored!");
+            redirect("/explored/login");
         }
 
         public function loginView()
@@ -50,23 +50,28 @@
         {
             $username = $_POST['username'];
             $password = $_POST['password'];
+            
+            $user = $this -> userModel -> login($username, $password);
 
-            $valid = $this -> userModel -> login($username, $password);
-
-            if(!$valid) {
+            if(!$user) {
                 setFlash('message', "Invalid username or password");
                 redirect("/explored/login");
             }
-
-            setFlash('message', "Welcome back {$_POST['username']}") ;
-            setAuth('user', $_POST['username']);
-            setAuth('role', 'user');
-            redirect("/explored");
+            
+            setFlash('message', "Welcome back {$user['username']}");
+            setAuth('user', $user['username']);
+            setAuth('role', $user['role']); 
+            
+            if ($user['role'] === 'admin') {
+                redirect("/explored/admin/dashboard"); 
+            } else {
+                redirect("/explored");
+            }
         }
 
         public function privacyPolicyView() {
-        $this->view->addData('title', 'Privacy Policy');
-        echo $this->view->render("privacy-policy.php");
+            $this->view->addData('title', 'Privacy Policy');
+            echo $this->view->render("privacy-policy.php");
         }
 
         public function termsAndConditionsView() {
@@ -74,8 +79,6 @@
             echo $this -> view -> render("terms-and-conditions.php");
         }
 
-        
-        
         public function checkUsername()
         {
             $username = $_GET['username'] ?? '';
