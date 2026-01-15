@@ -5,6 +5,7 @@
     namespace App\Controllers;
 
     use Framework\TemplateEngine;
+    use App\Model\Database;
 
     class HomeController
     {
@@ -32,6 +33,28 @@
         {
             $this->view->addData('title', 'About Us');
             echo $this->view->render("about.php");
+        }
+
+        public function storeContactMessage()
+        {
+            $db = new Database();
+            $conn = $db->connection();
+
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $subject = $_POST['subject'];
+            $message = $_POST['message'];
+
+            $stmt = $conn->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssss", $name, $email, $subject, $message);
+            $stmt->execute();
+            $stmt->close();
+            $conn->close();
+
+            // $_SESSION['flash'] = ['success' => "Message sent! We'll get back to you soon."];
+            setFlash('success', "Message sent! We'll get back to you soon.");
+            header("Location: /explored/contact");
+            exit;
         }
     }
 

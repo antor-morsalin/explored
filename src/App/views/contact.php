@@ -8,6 +8,13 @@
       <p class="text-slate-400 text-sm mt-1">We'd love to hear from you. Send us a message!</p>
     </div>
 
+    <?php if(isset($_SESSION['flash']['success'])): ?>
+      <div class="p-4 mx-auto max-w-4xl bg-green-100 border border-green-200 text-green-700 rounded-lg text-center" role="alert">
+        <p class="font-bold">Success!</p>
+        <p><?php echo $_SESSION['flash']['success']; unset($_SESSION['flash']['success']); ?></p>
+      </div>
+    <?php endif; ?>
+
     <div class="grid grid-cols-1 md:grid-cols-2">
         
         <div class="p-8 bg-slate-50 border-r border-slate-100">
@@ -53,25 +60,29 @@
         </div>
 
         <div class="p-8">
-            <form action="#" method="POST" class="space-y-4">
+            <form id="contactForm" action="/explored/contact" method="POST" class="space-y-4" novalidate>
                 <div>
                     <label for="name" class="block text-sm font-medium text-slate-700">Name</label>
-                    <input type="text" id="name" name="name" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-4 focus:ring-slate-200 focus:border-slate-400" placeholder="Your name">
+                    <input type="text" id="name" name="name" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-4 focus:ring-slate-200 focus:border-slate-400 transition-colors" placeholder="Your name">
+                    <p id="name-error" class="text-red-500 text-xs mt-1 hidden"></p>
                 </div>
 
                 <div>
                     <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
-                    <input type="email" id="email" name="email" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-4 focus:ring-slate-200 focus:border-slate-400" placeholder="you@example.com">
+                    <input type="email" id="email" name="email" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-4 focus:ring-slate-200 focus:border-slate-400 transition-colors" placeholder="you@example.com">
+                    <p id="email-error" class="text-red-500 text-xs mt-1 hidden"></p>
                 </div>
 
                 <div>
                     <label for="subject" class="block text-sm font-medium text-slate-700">Subject</label>
-                    <select id="subject" name="subject" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-4 focus:ring-slate-200 focus:border-slate-400 bg-white">
-                        <option>General Inquiry</option>
-                        <option>Report a Bug</option>
-                        <option>Feature Request</option>
-                        <option>Account Issue</option>
+                    <select id="subject" name="subject" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-4 focus:ring-slate-200 focus:border-slate-400 bg-white transition-colors">
+                        <option value="">Select a Subject</option>
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Report a Bug">Report a Bug</option>
+                        <option value="Feature Request">Feature Request</option>
+                        <option value="Account Issue">Account Issue</option>
                     </select>
+                    <p id="subject-error" class="text-red-500 text-xs mt-1 hidden"></p>
                 </div>
 
                 <div>
@@ -80,9 +91,10 @@
                         id="contact_message" 
                         name="message" 
                         rows="4" 
-                        class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-4 focus:ring-slate-200 focus:border-slate-400" 
+                        class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-4 focus:ring-slate-200 focus:border-slate-400 transition-colors" 
                         placeholder="How can we help you?"
                     ></textarea>
+                    <p id="message-error" class="text-red-500 text-xs mt-1 hidden"></p>
                 </div>
 
                 <button type="submit" class="w-full bg-slate-900 text-white py-2.5 rounded-xl font-semibold hover:bg-slate-800 transition-colors">
@@ -93,5 +105,72 @@
     </div>
   </div>
 </main>
+
+<script>
+    const form = document.getElementById('contactForm');
+    
+    
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const subjectInput = document.getElementById('subject');
+    const messageInput = document.getElementById('contact_message');
+
+    
+    const nameError = document.getElementById('name-error');
+    const emailError = document.getElementById('email-error');
+    const subjectError = document.getElementById('subject-error');
+    const messageError = document.getElementById('message-error');
+
+    form.addEventListener('submit', function (event) {
+        let isValid = true;
+        
+        [nameError, emailError, subjectError, messageError].forEach(el => el.classList.add('hidden'));
+        [nameInput, emailInput, subjectInput, messageInput].forEach(el => {
+            el.classList.remove('border-red-500', 'focus:ring-red-200', 'focus:border-red-500');
+            el.classList.add('border-slate-300', 'focus:ring-slate-200');
+        });
+        
+        if (nameInput.value.trim() === '') {
+            showError(nameInput, nameError, 'Name is required.');
+            isValid = false;
+        }
+        
+        if (emailInput.value.trim() === '') {
+            showError(emailInput, emailError, 'Email is required.');
+            isValid = false;
+        } else if (!isValidEmail(emailInput.value.trim())) {
+            showError(emailInput, emailError, 'Please enter a valid email address.');
+            isValid = false;
+        }
+        
+        if (subjectInput.value === '') {
+            showError(subjectInput, subjectError, 'Please select a subject.');
+            isValid = false;
+        }
+        
+        if (messageInput.value.trim() === '') {
+            showError(messageInput, messageError, 'Message field cannot be empty.');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+    
+    function showError(inputElement, errorElement, message) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('hidden');
+        
+        
+        inputElement.classList.remove('border-slate-300', 'focus:ring-slate-200');
+        inputElement.classList.add('border-red-500', 'focus:ring-red-200', 'focus:border-red-500');
+    }
+
+    function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+</script>
 
 <?php include $this->resolve("partials/_footer.php") ?>
