@@ -10,7 +10,7 @@
       </div>
 
       <div class="flex flex-wrap gap-6 text-sm font-medium text-slate-600">
-        <a href="#" class="hover:text-slate-900 transition">About Us</a>
+        <a href="/explored/about" class="hover:text-slate-900 transition">About Us</a>
         <a href="/explored/contact" class="hover:text-slate-900 transition">Contact Us</a>
         <a href="/explored/privacy-policy" class="hover:text-slate-900 transition">Privacy Policy</a>
         <a href="/explored/terms-and-conditions" class="hover:text-slate-900 transition">Terms and Conditions</a>

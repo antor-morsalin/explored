@@ -28,7 +28,11 @@
             echo $this -> view -> render("contact.php");
         }
 
-        
+        public function aboutView()
+        {
+            $this->view->addData('title', 'About Us');
+            echo $this->view->render("about.php");
+        }
     }
 
 

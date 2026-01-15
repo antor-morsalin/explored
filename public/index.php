@@ -19,6 +19,7 @@
     $app -> get('/explored/login', [AuthController::class, 'loginView']);
     $app -> post('/explored/login', [AuthController::class, 'login']);
     
+    $app -> get('/explored/about', [HomeController::class, 'aboutView']);
     $app -> get('/explored/contact', [HomeController::class, 'contactView']);
     $app -> get('explored/privacy-policy', [AuthController::class, 'privacyPolicyView']);
     $app -> get('/explored/terms-and-conditions', [AuthController::class, 'termsAndConditionsView']);
