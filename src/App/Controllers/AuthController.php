@@ -65,7 +65,7 @@
             if ($user['role'] === 'admin') {
                 redirect("/explored/admin/dashboard"); 
             } else {
-                redirect("/explored");
+                redirect("/explored/profile");
             }
         }
 
@@ -87,6 +87,11 @@
             header('Content-Type: application/json');
             echo json_encode(['available' => !$exists]);
             exit;
+        }
+
+        public function logout() 
+        {
+            logout();
         }
     }
 ?>

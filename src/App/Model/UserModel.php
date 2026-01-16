@@ -71,12 +71,28 @@
             
             return $result->fetch_assoc() ?: null;
         }
-        
+
         
         public function delete(int $id)
         {
             $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
             $stmt->bind_param("i", $id);
+            $stmt->execute();
+        }
+
+        public function findByUsername(string $username): ?array
+        {
+            $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            return $result->fetch_assoc() ?: null;
+        }
+
+        public function updatePassword(int $id, string $newPassword)
+        {
+            $stmt = $this->conn->prepare("UPDATE users SET password = ? WHERE id = ?");
+            $stmt->bind_param("si", $newPassword, $id);
             $stmt->execute();
         }
     }
