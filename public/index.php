@@ -30,5 +30,8 @@
 
     $app -> get('/explored/admin/dashboard', [AdminController::class, 'dashboard']);
     $app -> get('/explored/admin/messages', [AdminController::class, 'messages']);
+
+    $app -> get('/explored/admin/users', [AdminController::class, 'users']);
+    $app -> post('/explored/admin/users', [AdminController::class, 'deleteUser']);
     $app->run();
 ?>

@@ -54,6 +54,31 @@
             $result = $this->conn->query($sql);
             return (int) $result->fetch_assoc()['total'];
         }
+
+        public function findAll(): array
+        {
+            $sql = "SELECT * FROM users";
+            $result = $this->conn->query($sql);
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function find(int $id): ?array
+        {
+            $stmt = $this->conn->prepare("SELECT * FROM users WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            return $result->fetch_assoc() ?: null;
+        }
+        
+        
+        public function delete(int $id)
+        {
+            $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+        }
     }
-// No closing tag
+    
 ?>

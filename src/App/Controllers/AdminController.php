@@ -38,16 +38,70 @@
         }
 
         public function messages()
-    {
-        $this->auth->requireAdmin();
+        {
+            $this->auth->requireAdmin();
 
-        $conn = $this->db->connection();
-        $messageModel = new MessageModel($conn);
-        
-        $messages = $messageModel->findAll();
+            $conn = $this->db->connection();
+            $messageModel = new MessageModel($conn);
+            
+            $messages = $messageModel->findAll();
 
-        $this->view->addData('title', 'Admin Inbox');
-        echo $this->view->render("admin/messages.php", ['messages' => $messages]);
-    }
+            $this->view->addData('title', 'Admin Inbox');
+            echo $this->view->render("admin/messages.php", ['messages' => $messages]);
+        }
+
+
+        public function users()
+        {
+            $this->auth->requireAdmin();
+
+            $conn = $this->db->connection();
+            $userModel = new UserModel($conn);
+
+            $users = $userModel->findAll();
+
+            $this->view->addData('title', 'User Management');
+            echo $this->view->render("admin/users.php", ['users' => $users]);
+        }
+
+
+        public function deleteUser()
+        {
+            $this->auth->requireAdmin();
+
+            $id = (int) ($_POST['id'] ?? 0);
+            
+            if ($id) {
+                $conn = $this->db->connection();
+                $userModel = new UserModel($conn);
+                
+                // 1. Fetch the user details first
+                $userToDelete = $userModel->find($id);
+
+                if ($userToDelete) {
+                    // 2. Security Check: Is this user an admin?
+                    if ($userToDelete['role'] === 'admin') {
+                        setFlash('error', "You cannot ban another Admin!");
+                        redirect("/explored/admin/users");
+                        return; // Stop execution
+                    }
+
+                    // 3. Prevent deleting yourself (extra safety)
+                    if ($_SESSION['auth']['user'] === $userToDelete['username']) {
+                        setFlash('error', "You cannot ban yourself!");
+                        redirect("/explored/admin/users");
+                        return;
+                    }
+
+                    // 4. Safe to delete
+                    $userModel->delete($id);
+                    setFlash('success', "User '{$userToDelete['username']}' has been banned.");
+                } else {
+                    setFlash('error', "User not found.");
+                }
+            }
+
+            redirect("/explored/admin/users");
+        }
     }
 ?>
