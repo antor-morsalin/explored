@@ -38,9 +38,17 @@
         $_SESSION['flash'][$key] = $value;
     }
 
-    function setAuth(string $key, string $value)
+    function setAuth(string $key, mixed $value)
     {
         $_SESSION['auth'][$key] = $value;
+    }
+
+    function getAuth(string $key)
+    {
+        if(isset($_SESSION['auth'][$key]))
+        {
+            return $_SESSION['auth'][$key];
+        }
     }
 
     function isLoggedIn() : bool

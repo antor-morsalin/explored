@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-include __DIR__."/userdata.php";
+include __DIR__."/data.php";
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
@@ -53,7 +53,41 @@ foreach ($contact_messages as [$name, $email, $subject, $message]) {
     $stmt_msg->execute();
 }
 
+
+
+
+$conn->query("DROP TABLE IF EXISTS travel_logs");
+$conn->query("
+    CREATE TABLE travel_logs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        owner_id INT NOT NULL,
+        title VARCHAR(150) NOT NULL,
+        description TEXT NOT NULL,
+        journey_type VARCHAR(50) NOT NULL,
+        published TINYINT(1) NOT NULL DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        CONSTRAINT ownership
+            FOREIGN KEY (owner_id)
+            REFERENCES users(id)
+            ON DELETE CASCADE
+    ) ENGINE=InnoDB
+");
+
+$statement = $conn->prepare(
+    "INSERT INTO travel_logs (owner_id, title, description, journey_type)
+     VALUES (?, ?, ?, ?)"
+);
+
+foreach ($travel_logs as [$owner_id, $title, $description, $journey_type]) {
+    $statement->bind_param("isss", $owner_id, $title, $description, $journey_type);
+    $statement->execute();
+}
+
+
+
 echo "Seeding completed successfully!\n";
 echo "- 'users' table created with 'role' column.\n";
 echo "- 'contact_messages' table created.\n";
+echo "- 'travel_logs' table created.\n";
 ?>

@@ -6,7 +6,7 @@
     require __DIR__ . "/../vendor/autoload.php";
 
     use Framework\App;
-    use App\Controllers\{HomeController, AuthController, AdminController, ProfileController};
+    use App\Controllers\{HomeController, AuthController, AdminController, LogController, ProfileController};
 
     $app = new App();
 
@@ -38,7 +38,16 @@
     
     
     $app -> get('/explored/profile', [ProfileController::class, 'index']);
-    $app -> get('/explored/profile/logs', [ProfileController::class, 'logs']);
+
+
+    //! everything logs
+    $app -> get('/explored/logs', [LogController::class, 'logsView']);
+    $app -> get('/explored/createlog', [LogController::class, 'createLogView']);
+    $app -> post('/explored/logs', [LogController::class, 'postLog']);
+    $app -> get('/explored/logs/:id', [LogController::class, 'logView']);
+
+
+
     $app -> get('/explored/profile/wishlist', [ProfileController::class, 'wishlist']);
     $app -> get('/explored/profile/settings', [ProfileController::class, 'settings']);
     $app -> post('/explored/profile/password', [ProfileController::class, 'updatePassword']);
