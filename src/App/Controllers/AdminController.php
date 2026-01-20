@@ -20,7 +20,8 @@
             $this->auth = new AuthMiddleware();
         }
 
-        public function dashboard()
+        // ✨ FIX: Renamed to dashboardView and passing hide flags
+        public function dashboardView()
         {
             $this->auth->requireAdmin();
 
@@ -34,10 +35,16 @@
             ];
 
             $this->view->addData('title', 'Admin Dashboard');
-            echo $this->view->render("admin/dashboard.php", ['stats' => $stats]);
+            // Pass the flags here
+            echo $this->view->render("admin/dashboard.php", [
+                'stats' => $stats,
+                'hideNavigation' => true,
+                'hideFooter' => true
+            ]);
         }
 
-        public function messages()
+        // ✨ FIX: Renamed to messagesView and passing hide flags
+        public function messagesView()
         {
             $this->auth->requireAdmin();
 
@@ -47,11 +54,16 @@
             $messages = $messageModel->findAll();
 
             $this->view->addData('title', 'Admin Inbox');
-            echo $this->view->render("admin/messages.php", ['messages' => $messages]);
+            // Pass the flags here
+            echo $this->view->render("admin/messages.php", [
+                'messages' => $messages,
+                'hideNavigation' => true,
+                'hideFooter' => true
+            ]);
         }
 
-
-        public function users()
+        // ✨ FIX: Renamed to usersView and passing hide flags
+        public function usersView()
         {
             $this->auth->requireAdmin();
 
@@ -61,9 +73,13 @@
             $users = $userModel->findAll();
 
             $this->view->addData('title', 'User Management');
-            echo $this->view->render("admin/users.php", ['users' => $users]);
+            // Pass the flags here
+            echo $this->view->render("admin/users.php", [
+                'users' => $users,
+                'hideNavigation' => true,
+                'hideFooter' => true
+            ]);
         }
-
 
         public function deleteUser()
         {
@@ -75,25 +91,21 @@
                 $conn = $this->db->connection();
                 $userModel = new UserModel($conn);
                 
-                // 1. Fetch the user details first
                 $userToDelete = $userModel->find($id);
 
                 if ($userToDelete) {
-                    // 2. Security Check: Is this user an admin?
                     if ($userToDelete['role'] === 'admin') {
                         setFlash('error', "You cannot ban another Admin!");
                         redirect("/explored/admin/users");
-                        return; // Stop execution
+                        return; 
                     }
 
-                    // 3. Prevent deleting yourself (extra safety)
                     if ($_SESSION['auth']['user'] === $userToDelete['username']) {
                         setFlash('error', "You cannot ban yourself!");
                         redirect("/explored/admin/users");
                         return;
                     }
 
-                    // 4. Safe to delete
                     $userModel->delete($id);
                     setFlash('success', "User '{$userToDelete['username']}' has been banned.");
                 } else {
