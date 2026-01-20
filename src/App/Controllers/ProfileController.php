@@ -21,7 +21,7 @@
         }
 
         // 1. Dashboard / Overview
-        public function index()
+        public function indexView()
         {
             $this->auth->requireLogin();
             $user = $this->getUser();
@@ -37,7 +37,7 @@
         }
 
         // 2. My Travel Logs Page
-        public function logs()
+        public function logsView()
         {
             $this->auth->requireLogin();
             $user = $this->getUser();
@@ -47,7 +47,7 @@
         }
 
         // 3. Wishlist Page
-        public function wishlist()
+        public function wishlistView()
         {
             $this->auth->requireLogin();
             $user = $this->getUser();
@@ -57,7 +57,7 @@
         }
 
         // 4. Settings Page
-        public function settings()
+        public function settingsView()
         {
             $this->auth->requireLogin();
             $user = $this->getUser();

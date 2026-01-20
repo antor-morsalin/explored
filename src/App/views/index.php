@@ -49,4 +49,4 @@
     </div>
     </main>
 
-<?php include $this->resolve("partials/_footer.php") ;dd($_SESSION);?>
+<?php include $this->resolve("partials/_footer.php") ;?>

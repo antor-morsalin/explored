@@ -16,7 +16,7 @@
             $this -> view = new TemplateEngine(__DIR__."/../views");
         }
 
-        public function home()
+        public function homeView()
         {
             // I wonder ekhane middleware gula boshabo naki
             $this -> view -> addData('title', 'Home Page');

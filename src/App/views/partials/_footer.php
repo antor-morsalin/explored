@@ -1,3 +1,4 @@
+<?php if (empty($hideFooter)): ?>
 <footer class="border-t border-slate-200 bg-white mt-auto">
   <div class="mx-auto max-w-7xl px-6 py-10">
     <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
@@ -23,13 +24,13 @@
     © 2025 Explored. All rights reserved.
   </div>
 </footer>
+<?php endif; ?>
 
 <div id="page-loader" class="loader-overlay" style="display: none;">
     <div class="loader"></div>
 </div>
 
 <script>
-
   const message = document.getElementById('message');
   const error = document.getElementById('error');
   const success = document.getElementById('success');
@@ -41,7 +42,6 @@
         if(success) success.remove();
       }, 10000);
   }
-
   
   document.addEventListener("DOMContentLoaded", function() {
       const loader = document.getElementById('page-loader');
@@ -53,14 +53,12 @@
       function hideLoader() {
           loader.style.display = 'none';
       }
-
       
       document.addEventListener('click', function(event) {
           const link = event.target.closest('a');
           if (link) {
               const href = link.getAttribute('href');
               const target = link.getAttribute('target');
-              
               
               if (
                   target !== '_blank' && 
@@ -74,21 +72,14 @@
               }
           }
       });
-
       
       document.addEventListener('submit', function(event) {
-        
-          if (event.defaultPrevented) {
-              return;
-          }
+          if (event.defaultPrevented) { return; }
           showLoader();
       });
-
       
       window.addEventListener('pageshow', function(event) {
-          if (event.persisted) {
-              hideLoader();
-          }
+          if (event.persisted) { hideLoader(); }
       });
   });
 </script>

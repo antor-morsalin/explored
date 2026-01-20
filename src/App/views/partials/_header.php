@@ -17,9 +17,7 @@
         var(--c) 50%  50%,
         var(--c) 100% 50%;
       background-size: 20% 100%;
-      
-      /* DURATION SET TO 1s HERE */
-      animation: l1 4s infinite linear;
+      animation: l1 1s infinite linear; /* Changed to 1s for smoother animation */
     }
     
     @keyframes l1 {
@@ -49,6 +47,7 @@
 
 <body class="min-h-screen flex flex-col font-sans text-slate-900">
 
+  <?php if (empty($hideNavigation)): ?>
   <nav class="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200 sticky top-0 z-50">
     <div class="text-xl font-bold tracking-tight text-slate-900">
       <a href="/explored/">Explored</a>
@@ -67,6 +66,7 @@
       Login
     </a>
   </nav>
+  <?php endif; ?>
 
   <div class="flex-1">
     <?php $message = flash('message'); if ($message) { ?>
