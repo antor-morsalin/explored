@@ -57,12 +57,13 @@
             
             setFlash('message', "Welcome back {$user['username']}");
             setAuth('user', $user['username']);
+            setAuth('userId', $user['id']);
             setAuth('role', $user['role']); 
             
             if ($user['role'] === 'admin') {
                 redirect("/explored/admin/dashboard"); 
             } else {
-                redirect("/explored/profile");
+                redirect("/explored");
             }
         }
 
@@ -85,6 +86,8 @@
             echo json_encode(['available' => !$exists]);
             exit;
         }
+
+        
 
         public function logout() 
         {

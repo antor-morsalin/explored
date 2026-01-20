@@ -25,24 +25,59 @@
             return $path;
         }
 
-        public function dispatch (string $method, string $path)
+        public function dispatch(string $method, string $path)
         {
-            $path = $this -> normalizePath($path);
+            $path   = $this->normalizePath($path);
             $method = strtoupper($method);
-            foreach($this -> routes as $route)
-            {
-                if(!preg_match("#^{$route['path']}$#", $path) || $route['method'] !== $method)
-                {
+
+            foreach ($this->routes as $route) {
+
+                // method must match
+                if ($route['method'] !== $method) {
                     continue;
                 }
-                else 
-                {
+
+                // ---- PARAM ROUTE ONLY (Express-style :id) ----
+                if (str_contains($route['path'], ':')) {
+
+                    // build regex from route path
+                    $routeRegex = preg_replace('#:\w+#', '([^/]+)', $route['path']);
+
+                    // match first
+                    $matches = [];
+                    if (!preg_match("#^{$routeRegex}$#", $path, $matches)) {
+                        continue;
+                    }
+
+                    // single param name
+                    preg_match('#:(\w+)#', $route['path'], $m);
+                    $paramName = $m[1];
+
+                    // store globally
+                    $_GET['params'][$paramName] = $matches[1];
+
+                    // call controller (no args)
                     [$class, $function] = $route['controller'];
                     $controllerObj = new $class;
-                    $controllerObj -> $function();
+                    $controllerObj->$function();
+
+                    return;
                 }
+
+                // ---- STATIC ROUTES (your original logic) ----
+                if (!preg_match("#^{$route['path']}$#", $path)) {
+                    continue;
+                }
+
+                [$class, $function] = $route['controller'];
+                $controllerObj = new $class;
+                $controllerObj->$function();
+
+                return;
             }
         }
+
+
     }
 
 

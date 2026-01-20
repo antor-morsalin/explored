@@ -16,7 +16,7 @@ function getSubjectBadgeClass(string $subject): string {
 <div class="flex min-h-screen bg-slate-100 font-sans">
     
     <aside class="w-64 bg-slate-900 text-white flex flex-col flex-shrink-0 transition-all duration-300">
-        <div class="flex flex-col justify-center h-20 px-6 border-b border-slate-800">
+        <div class="flex flex-col justify-center items-center h-20 px-6 border-b border-slate-800">
             <a href="/explored/admin/dashboard" class="text-indigo-400 font-bold text-2xl tracking-tight leading-none hover:text-indigo-300 transition-colors">
                 Explored
             </a>
