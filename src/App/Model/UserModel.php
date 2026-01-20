@@ -15,24 +15,29 @@
 
         public function register(string $username, string $password)
         {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $statement = $this->conn->prepare(
                 "INSERT INTO users (username, password) VALUES (?, ?)"
             );
-            $statement->bind_param("ss", $username, $password);
+            $statement->bind_param("ss", $username, $hashedPassword);
             $statement->execute();
         }
 
         public function login(string $username, string $password)
         {
             $statement = $this->conn->prepare(
-                "SELECT * FROM users WHERE username = ? AND password = ?"
+                "SELECT * FROM users WHERE username = ?"
             );
-            $statement->bind_param("ss", $username, $password);
+            $statement->bind_param("s", $username);
             $statement->execute();
             $result = $statement->get_result();
 
             if ($result->num_rows === 1) {
-                return $result->fetch_assoc();
+                $user = $result->fetch_assoc();
+
+                if(password_verify($password, $user['password'])) {
+                    return $user;
+                }
             }
 
             return false;
@@ -91,8 +96,10 @@
 
         public function updatePassword(int $id, string $newPassword)
         {
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
             $stmt = $this->conn->prepare("UPDATE users SET password = ? WHERE id = ?");
-            $stmt->bind_param("si", $newPassword, $id);
+            $stmt->bind_param("si", $hashedPassword, $id);
             $stmt->execute();
         }
     }

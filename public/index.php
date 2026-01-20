@@ -47,6 +47,6 @@
     $app -> get('/explored/createlog', [LogController::class, 'createLogView']);
     $app -> post('/explored/logs', [LogController::class, 'postLog']);
     $app -> get('/explored/logs/:id', [LogController::class, 'logView']);
-
+    
     $app->run();
 ?>

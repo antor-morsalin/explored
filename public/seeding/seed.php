@@ -11,6 +11,9 @@ $conn->query("CREATE DATABASE IF NOT EXISTS explored");
 $conn->set_charset("utf8mb4");
 $conn->select_db("explored");
 
+// ✨ FIX: Drop 'travel_logs' FIRST because it references 'users'
+$conn->query("DROP TABLE IF EXISTS travel_logs");
+
 // TABLE 1: USERS (With Role)
 $conn->query("DROP TABLE IF EXISTS users");
 $conn->query("
@@ -27,7 +30,8 @@ $statement = $conn->prepare(
 );
 
 foreach ($users as [$username, $password, $role]) {
-    $statement->bind_param("sss", $username, $password, $role);
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $statement->bind_param("sss", $username, $hashedPassword, $role);
     $statement->execute();
 }
 
@@ -53,10 +57,8 @@ foreach ($contact_messages as [$name, $email, $subject, $message]) {
     $stmt_msg->execute();
 }
 
-
-
-
-$conn->query("DROP TABLE IF EXISTS travel_logs");
+// TABLE 3: TRAVEL LOGS
+// (Drop statement removed from here since we moved it to the top)
 $conn->query("
     CREATE TABLE travel_logs (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -83,8 +85,6 @@ foreach ($travel_logs as [$owner_id, $title, $description, $journey_type]) {
     $statement->bind_param("isss", $owner_id, $title, $description, $journey_type);
     $statement->execute();
 }
-
-
 
 echo "Seeding completed successfully!\n";
 echo "- 'users' table created with 'role' column.\n";

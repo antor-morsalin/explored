@@ -69,7 +69,7 @@
 
             $hasError = false;
 
-            if ($this->user['password'] !== $currentPassword) {
+            if (!password_verify($currentPassword, $this->user['password'])) {
                 setFlash('error_current_password', "Incorrect current password.");
                 $hasError = true;
             }
