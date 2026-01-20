@@ -42,5 +42,5 @@
     $app -> get('/explored/profile/wishlist', [ProfileController::class, 'wishlist']);
     $app -> get('/explored/profile/settings', [ProfileController::class, 'settings']);
     $app -> post('/explored/profile/password', [ProfileController::class, 'updatePassword']);
-    $app->run();
+    $app -> run();
 ?>

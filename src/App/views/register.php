@@ -129,7 +129,6 @@
           try {
               const response = await fetch(`/explored/api/check-username?username=${encodeURIComponent(username)}`);
               const data = await response.json();
-
               spinner.classList.add('hidden'); // Hide spinner
 
               if (data.available) {
