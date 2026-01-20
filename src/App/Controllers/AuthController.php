@@ -7,22 +7,19 @@
     use Framework\TemplateEngine;
     use App\Middlewares\AuthMiddleware;
     use App\Model\{Database, UserModel};
-
+    use mysqli;
     class AuthController
     {   
         private TemplateEngine $view;  
-        private AuthMiddleware $authMiddleware;
-        private Database $db;
         private UserModel $userModel;
+        private mysqli $conn;
         
         public function __construct()
         {
             $this -> view = new TemplateEngine(__DIR__."/../views");
-            $this -> authMiddleware = new AuthMiddleware();
-
-            $this -> db = new Database();
-            $conn = $this -> db -> connection();
-            $this -> userModel = new UserModel($conn);
+            $db = new Database();
+            $this -> conn = $db -> connection();
+            $this -> userModel = new UserModel($this -> conn);
         }
 
         public function registerView()

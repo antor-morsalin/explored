@@ -6,28 +6,27 @@
     use Framework\TemplateEngine;
     use App\Middlewares\AuthMiddleware;
     use App\Model\{Database, UserModel, MessageModel};
+    use mysqli;
 
     class AdminController
     {
         private TemplateEngine $view;
-        private Database $db;
-        private AuthMiddleware $auth;
+        private AuthMiddleware $authMiddleWare; 
+        private mysqli $conn;
 
         public function __construct()
         {
             $this->view = new TemplateEngine(__DIR__ . "/../views");
-            $this->db = new Database();
-            $this->auth = new AuthMiddleware();
+            $this->authMiddleWare = new AuthMiddleware(); 
+            $this->authMiddleWare->requireAdmin(); 
+            $db = new Database();
+            $this->conn = $db->connection();
         }
 
-        // ✨ FIX: Renamed to dashboardView and passing hide flags
         public function dashboardView()
         {
-            $this->auth->requireAdmin();
-
-            $conn = $this->db->connection();
-            $userModel = new UserModel($conn);
-            $messageModel = new MessageModel($conn);
+            $userModel = new UserModel($this->conn);
+            $messageModel = new MessageModel($this->conn);
 
             $stats = [
                 'total_users' => $userModel->countAll(),
@@ -35,62 +34,37 @@
             ];
 
             $this->view->addData('title', 'Admin Dashboard');
-            // Pass the flags here
-            echo $this->view->render("admin/dashboard.php", [
-                'stats' => $stats,
-                'hideNavigation' => true,
-                'hideFooter' => true
-            ]);
+            
+            // 3. Use helper method to render
+            $this->renderAdminView("admin/dashboard.php", ['stats' => $stats]);
         }
 
-        // ✨ FIX: Renamed to messagesView and passing hide flags
         public function messagesView()
         {
-            $this->auth->requireAdmin();
-
-            $conn = $this->db->connection();
-            $messageModel = new MessageModel($conn);
-            
+            $messageModel = new MessageModel($this->conn);
             $messages = $messageModel->findAll();
 
             $this->view->addData('title', 'Admin Inbox');
-            // Pass the flags here
-            echo $this->view->render("admin/messages.php", [
-                'messages' => $messages,
-                'hideNavigation' => true,
-                'hideFooter' => true
-            ]);
+            $this->renderAdminView("admin/messages.php", ['messages' => $messages]);
         }
 
-        // ✨ FIX: Renamed to usersView and passing hide flags
         public function usersView()
         {
-            $this->auth->requireAdmin();
-
-            $conn = $this->db->connection();
-            $userModel = new UserModel($conn);
-
+            $userModel = new UserModel($this->conn);
             $users = $userModel->findAll();
 
             $this->view->addData('title', 'User Management');
-            // Pass the flags here
-            echo $this->view->render("admin/users.php", [
-                'users' => $users,
-                'hideNavigation' => true,
-                'hideFooter' => true
-            ]);
+            $this->renderAdminView("admin/users.php", ['users' => $users]);
         }
 
         public function deleteUser()
         {
-            $this->auth->requireAdmin();
+            // Note: $this->authMiddleWare->requireAdmin() is already called in __construct
 
             $id = (int) ($_POST['id'] ?? 0);
             
             if ($id) {
-                $conn = $this->db->connection();
-                $userModel = new UserModel($conn);
-                
+                $userModel = new UserModel($this->conn);
                 $userToDelete = $userModel->find($id);
 
                 if ($userToDelete) {
@@ -114,6 +88,19 @@
             }
 
             redirect("/explored/admin/users");
+        }
+
+        /**
+         * Helper function to render admin views with standard flags
+         */
+        private function renderAdminView(string $path, array $data = [])
+        {
+            $adminFlags = [
+                'hideNavigation' => true,
+                'hideFooter' => true
+            ];
+            
+            echo $this->view->render($path, array_merge($data, $adminFlags));
         }
     }
 ?>

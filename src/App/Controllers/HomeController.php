@@ -6,14 +6,16 @@
 
     use Framework\TemplateEngine;
     use App\Model\Database;
-
+    use mysqli;
     class HomeController
     {
         private TemplateEngine $view ;
-
+        private mysqli $conn;
         public function __construct()
         {
             $this -> view = new TemplateEngine(__DIR__."/../views");
+            $db = new Database();
+            $this->conn = $db->connection();
         }
 
         public function homeView()
@@ -37,19 +39,16 @@
 
         public function storeContactMessage()
         {
-            $db = new Database();
-            $conn = $db->connection();
 
             $name = $_POST['name'];
             $email = $_POST['email'];
             $subject = $_POST['subject'];
             $message = $_POST['message'];
 
-            $stmt = $conn->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
+            $stmt = $this->conn->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("ssss", $name, $email, $subject, $message);
             $stmt->execute();
             $stmt->close();
-            $conn->close();
 
             // $_SESSION['flash'] = ['success' => "Message sent! We'll get back to you soon."];
             setFlash('success', "Message sent! We'll get back to you soon.");

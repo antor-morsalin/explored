@@ -41,6 +41,6 @@
     $app -> get('/explored/profile/logs', [ProfileController::class, 'logsView']);
     $app -> get('/explored/profile/wishlist', [ProfileController::class, 'wishlistView']);
     $app -> get('/explored/profile/settings', [ProfileController::class, 'settingsView']);
-    $app -> post('/explored/profile/password', [ProfileController::class, 'updatePasswordView']);
+    $app -> post('/explored/profile/password', [ProfileController::class, 'updatePassword']);
     $app -> run();
 ?>
