@@ -6,7 +6,7 @@
     require __DIR__ . "/../vendor/autoload.php";
 
     use Framework\App;
-    use App\Controllers\{HomeController, AuthController, AdminController, LogController, ProfileController, LogSectionController};
+    use App\Controllers\{HomeController, AuthController, AdminController, LogController, ProfileController, LogSectionController, CommentController};
 
     $app = new App();
 
@@ -60,6 +60,11 @@
 
     // explore
     $app -> get('/explored/explore', [LogController::class, 'exploreView']);
+
+
+
+    //Comments
+    $app -> post('/explored/comment/:id', [CommentController::class, 'postComment']);
 
 
 

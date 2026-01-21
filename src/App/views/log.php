@@ -1,21 +1,22 @@
 <?php include $this->resolve("partials/_header.php") ?>
 
 <main class="max-w-4xl mx-auto p-6">
-    <div class="flex flex-col gap-6">
+
+<div class="flex flex-col gap-10 lg:flex-row lg:gap-20 lg:justify-between">
+    <div class="flex flex-col gap-6 lg:flex-1">
         
-        <!-- Title -->
         <h1 class="text-4xl font-semibold">
-            <?php echo $log['title']; ?>
+            <?php echo $log['title']; ?>    
         </h1>
 
         <h3 class="text-xl font-semibold">Average cost per person ৳<?php echo $avgCost; ?></h5>
 
         <!-- Meta info -->
-        <div class="flex items-center gap-4 text-sm text-gray-600">
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
             <span><?php echo $log['ownerName']; ?></span>
-            <span>•</span>
+            <span class="hidden sm:inline">•</span>
             <span><?php echo $log['created_at']; ?></span>
-            <span>•</span>
+            <span class="hidden sm:inline">•</span>
             <span><?php echo $log['journey_type']; ?></span>
         </div>
 
@@ -32,79 +33,134 @@
                 </button>
             </a>
         <?php } ?>
+        <?php if (!$log['published']){ ?>
+            <form action=<?php echo "/explored/logs/{$log['id']}/publish" ?> method="post">
+                <button class="mt-6 text-black w-full bg-white border border-black py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+                    Publish 
+                </button>
+            </form>
+        <?php } ?>
 
-        
-    </div>
-    <?php if (!$log['published']){ ?>
-        <form action=<?php echo "/explored/logs/{$log['id']}/publish" ?> method="post">
-            <button class="mt-6 text-black w-full bg-white border border-black py-3 text-sm font-medium hover:bg-black hover:text-white transition">
-                Publish 
-            </button>
-        </form>
-    <?php } ?>
+        <div class="max-w-5xl">
+            <h2 class="text-2xl font-semibold tracking-tight mb-6">
+                Visited destinations
+            </h2>
 
-    <div class="mt-10 max-w-5xl">
-        <h2 class="text-2xl font-semibold tracking-tight mb-6">
-            Visited destinations
-        </h2>
+            <?php foreach ($logSections as $logSection) { ?>
+                <div class="flex flex-col justify-between gap-10 rounded-2xl border border-gray-300 p-6 mb-4">
 
-        <?php foreach ($logSections as $logSection) { ?>
-            <div class="flex flex-col justify-between gap-10 rounded-2xl border border-gray-300 p-6 mb-4">
+                    <div class="flex flex-col gap-3 flex-1">
 
-                <div class="flex flex-col gap-3 flex-1">
+                        <!-- First row: title + cost -->
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-28">
+                            <h3 class="text-xl font-semibold tracking-tight">
+                                <?php echo $logSection['place_name']; ?>
+                            </h3>
 
-                    <!-- First row: title + cost -->
-                    <div class="flex items-center justify-between gap-20">
-                        <h3 class="text-xl font-semibold tracking-tight">
-                            <?php echo $logSection['place_name']; ?>
-                        </h3>
+                            <p class="text-sm">
+                                Cost per person:
+                                <span class="font-semibold">
+                                ৳<?php echo $logSection['avg_cost']; ?> 
+                                </span>
+                            </p>
+                        </div>
 
-                        <p class="text-sm">
-                            Cost per person:
-                            <span class="font-semibold">
-                               ৳<?php echo $logSection['avg_cost']; ?> 
-                            </span>
+                        <!-- Second row -->
+                        <p class="text-sm text-gray-600">
+                            Visited on <?php echo $logSection['created_at']; ?>
                         </p>
-                    </div>
 
-                    <!-- Second row -->
-                    <p class="text-sm text-gray-600">
-                        Visited on <?php echo $logSection['created_at']; ?>
-                    </p>
-
-                    <!-- Third row -->
-                    <div class="text-sm text-gray-600">
-                        Map link:
-                        <?php if ($logSection['map_link']) { ?>
-                            <a class="underline ml-1" href="<?php echo $logSection['map_link']; ?>">
-                                View on Google Maps
-                            </a>
-                        <?php } else { ?>
-                            <span class="text-slate-500 ml-1">Not given</span>
-                        <?php } ?>
-                    </div>
-                    
-
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <div class="text-sm text-gray-600">Type</div>
-                            <div class="text-sm font-medium"><?php echo $logSection['place_type']; ?></div>
+                        <!-- Third row -->
+                        <div class="text-sm text-gray-600">
+                            Map link:
+                            <?php if ($logSection['map_link']) { ?>
+                                <a class="underline ml-1" href="<?php echo $logSection['map_link']; ?>">
+                                    View on Google Maps
+                                </a>
+                            <?php } else { ?>
+                                <span class="text-slate-500 ml-1">Not given</span>
+                            <?php } ?>
                         </div>
-                        <div>
-                            <div class="mt-4 text-sm text-gray-600">Rating</div>
-                            <div class="text-sm font-medium"><?php echo $logSection['rating']; ?>/5</div>
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm text-gray-600">Type</div>
+                                <div class="text-sm font-medium"><?php echo $logSection['place_type']; ?></div>
+                            </div>
+                            <div>
+                                <div class="mt-4 text-sm text-gray-600">Rating</div>
+                                <div class="text-sm font-medium"><?php echo $logSection['rating']; ?>/5</div>
+                            </div>
                         </div>
+
                     </div>
 
                 </div>
-
-            </div>
-        <?php } ?>
+            <?php } ?>
+        </div>
+        
     </div>
 
 
-</main>
+    <div class="flex flex-col gap-6 border-gray-300 lg:w-[360px] lg:shrink-0">
 
+        <!-- Prompt -->
+        <p class="text-base font-medium text-gray-800 text-xl">
+            Leave your comment
+        </p>
+
+        <!-- Textarea -->
+        
+
+        <!-- Button -->
+        <form action=<?php echo "/explored/comment/{$log['id']}" ?> method="post">
+            <textarea
+                name="comment"
+                rows="5"
+                class="w-full rounded-2xl border border-gray-300 p-5 text-sm text-gray-800 outline-none focus:border-black"
+                placeholder="Write your thoughts here..."
+            ></textarea>
+            <button
+                type="submit"
+                class="w-full rounded-2xl bg-black border border-black py-4 text-sm font-medium text-white hover:bg-white hover:text-black transition"
+            >
+                Comment
+            </button>
+        </form>
+
+
+        <!-- Comments section -->   
+         <?php if(count($comments)){ ?>
+        <div class="flex flex-col gap-4">
+            <h2 class="text-xl font-semibold tracking-tight">
+                Comments
+            </h2>
+
+            <div class="max-h-80 overflow-y-auto rounded-2xl border border-gray-300 p-6 flex flex-col gap-6">
+                
+                <?php foreach($comments as $comment){ ?>
+                    <div class="flex flex-col gap-2 border-b border-gray-200 pb-4">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="font-medium"><?php echo $comment['ownerName']; ?></span>
+                            <span class="text-gray-500"><?php echo $comment['created_at']; ?></span>
+                        </div>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            <?php echo $comment['comment']; ?>
+                        </p>
+                    </div>
+                <?php } ?>
+
+
+            </div>
+        </div>
+         <?php } ?>
+
+
+    </div>
+
+</div>
+
+</main>
 
 
 <?php include $this->resolve("partials/_footer.php") ?>

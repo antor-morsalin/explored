@@ -6,7 +6,7 @@
 
     use Framework\TemplateEngine;
     use App\Model\Database;
-    use App\Model\{LogModel, LogSectionModel, UserModel};
+    use App\Model\{LogModel, LogSectionModel, UserModel, CommentModel};
     use App\Middlewares\LogMiddleWare;
 
     class LogController
@@ -16,7 +16,9 @@
         private UserModel $userModel;
         private LogModel $logModel;
         private LogSectionModel $logSectionModel;
+        private CommentModel $commentModel;
         private LogMiddleWare $logMiddleWare;
+
 
         public function __construct()
         {
@@ -26,6 +28,7 @@
             $this -> userModel = new UserModel($conn);
             $this -> logModel = new LogModel($conn);
             $this -> logSectionModel = new LogSectionModel($conn);
+            $this -> commentModel = new CommentModel($conn);
             $this -> logMiddleWare = new LogMiddleWare();
         }
 
@@ -81,6 +84,14 @@
 
             $avgCost = $this -> logModel -> getAvgCost($_GET['params']['id']);
             $this -> view -> addData('avgCost', $avgCost);
+
+            $comments = $this -> commentModel -> getAllComments($_GET['params']['id']);
+            foreach($comments as &$comment)
+            {
+                $comment['ownerName'] = $this -> userModel -> getUserName($comment['owner_id']);
+            }
+            $this -> view -> addData('comments', $comments);
+
             echo $this -> view -> render("log.php");
         }
 

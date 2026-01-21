@@ -123,9 +123,32 @@ $conn->query("
 ");
 
 
+// TABLE 5: COMMENTS
+$conn->query("
+    CREATE TABLE comments (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        owner_id INT NOT NULL,
+        log_id INT NOT NULL,
+        comment TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        CONSTRAINT comment_owner
+            FOREIGN KEY (owner_id)
+            REFERENCES users(id)
+            ON DELETE CASCADE,
+
+        CONSTRAINT comment_log
+            FOREIGN KEY (log_id)
+            REFERENCES travel_logs(id)
+            ON DELETE CASCADE
+    ) ENGINE=InnoDB
+");
+
+
 echo "Seeding completed successfully!\n";
 echo "- 'users' table created with 'role' column.\n";
 echo "- 'contact_messages' table created.\n";
 echo "- 'travel_logs' table created.\n";
 echo "- 'log_sections' table created.\n";
+echo "- 'comments' table created.\n";
 ?>
