@@ -47,12 +47,19 @@
     $app -> get('/explored/createlog', [LogController::class, 'createLogView']);
     $app -> post('/explored/logs', [LogController::class, 'postLog']);
     $app -> get('/explored/logs/:id', [LogController::class, 'logView']);
+    $app -> post('/explored/logs/:id/publish', [LogController::class, 'publishLog']);
     
 
 
     // Log Section Routes
     $app -> get('/explored/logs/:id/new', [LogSectionController::class, 'newSectionView']);
     $app -> post('/explored/logs/:id/new', [LogSectionController::class, 'postNewSection']);
+
+
+
+
+    // explore
+    $app -> get('/explored/explore', [LogController::class, 'exploreView']);
 
 
 

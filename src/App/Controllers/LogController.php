@@ -78,7 +78,30 @@
 
             $logSections = $this -> logSectionModel -> getAllLogSections($_GET['params']['id']);
             $this -> view -> addData('logSections', $logSections);
+
+            $avgCost = $this -> logModel -> getAvgCost($_GET['params']['id']);
+            $this -> view -> addData('avgCost', $avgCost);
             echo $this -> view -> render("log.php");
+        }
+
+        public function publishLog()
+        {
+            $logId = $_GET['params']['id'];
+            $this -> logModel -> publishLog($logId);
+            setFlash('success', "Your travel log was published and now all users can see it");
+            redirect("/explored/logs/{$logId}");
+        }
+
+        public function exploreView()
+        {
+            $logs = $this -> logModel -> exploreLogs();
+            foreach($logs as &$log)
+            {
+                $log['avgCost'] = $this -> logModel -> getAvgCost($log['id']);
+            }
+            $this -> view -> addData('title', "Explore");
+            $this -> view -> addData('logs', $logs);
+            echo $this -> view -> render("explore.php");
         }
 
     

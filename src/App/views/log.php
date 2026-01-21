@@ -8,6 +8,8 @@
             <?php echo $log['title']; ?>
         </h1>
 
+        <h3 class="text-xl font-semibold">Average cost per person ৳<?php echo $avgCost; ?></h5>
+
         <!-- Meta info -->
         <div class="flex items-center gap-4 text-sm text-gray-600">
             <span><?php echo $log['ownerName']; ?></span>
@@ -23,20 +25,23 @@
         </p>
 
         <!-- Action -->
-         <a href=<?php echo "/explored/logs/{$log['id']}/new" ?>>
-            <button class="mt-6 text-white w-full bg-black border border-black py-3 text-sm font-medium hover:bg-white hover:text-black transition">
-                Add a new section
-            </button>
-         </a>
+        <?php if (!$log['published']){ ?>
+            <a href=<?php echo "/explored/logs/{$log['id']}/new" ?>>
+                <button class="mt-6 text-white w-full bg-black border border-black py-3 text-sm font-medium hover:bg-white hover:text-black transition">
+                    Add a new section
+                </button>
+            </a>
+        <?php } ?>
+
         
     </div>
-
-    <form action=<?php echo "/explored/logs/{$log['id']}/publish" ?> method="post">
-        <button class="mt-6 text-black w-full bg-white border border-black py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+    <?php if (!$log['published']){ ?>
+        <form action=<?php echo "/explored/logs/{$log['id']}/publish" ?> method="post">
+            <button class="mt-6 text-black w-full bg-white border border-black py-3 text-sm font-medium hover:bg-black hover:text-white transition">
                 Publish 
-        </button>
-    </form>
-
+            </button>
+        </form>
+    <?php } ?>
 
     <div class="mt-10 max-w-5xl">
         <h2 class="text-2xl font-semibold tracking-tight mb-6">
@@ -91,17 +96,7 @@
                         </div>
                     </div>
 
-                    
-
-                
-
-
                 </div>
-
-                <!-- Right column -->
-                
-                
-              
 
             </div>
         <?php } ?>
