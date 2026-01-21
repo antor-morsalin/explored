@@ -1,27 +1,49 @@
 <?php if (empty($hideFooter)): ?>
-<footer class="border-t border-slate-200 bg-white mt-auto">
+<footer class="bg-slate-900 border-t border-slate-800 mt-auto text-slate-300 font-sans">
   <div class="mx-auto max-w-7xl px-6 py-10">
-    <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+    
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-8 mb-4">
       
-      <div>
-        <h3 class="text-lg font-bold text-slate-900">Explored</h3>
-        <p class="mt-1 text-sm text-slate-600">
-          Travel logs shared by real people.
+      <div class="col-span-1 md:col-span-2">
+        <h3 class="text-xl font-bold text-white tracking-tight">Explored</h3>
+        <p class="mt-2 text-xs leading-relaxed text-slate-400 max-w-sm">
+          Your personal travel companion. Capture memories, share costs, and inspire others to explore the world.
         </p>
       </div>
 
-      <div class="flex flex-wrap gap-6 text-sm font-medium text-slate-600">
-        <a href="/explored/about" class="hover:text-slate-900 transition">About Us</a>
-        <a href="/explored/contact" class="hover:text-slate-900 transition">Contact Us</a>
-        <a href="/explored/privacy-policy" class="hover:text-slate-900 transition">Privacy Policy</a>
-        <a href="/explored/terms-and-conditions" class="hover:text-slate-900 transition">Terms and Conditions</a>
+      <div class="hidden md:block md:col-span-1"></div>
+
+      <div class="col-span-1">
+        <h3 class="text-xs font-bold text-white tracking-wider uppercase mb-3">Discover</h3>
+        <ul class="space-y-2">
+          <li><a href="/explored" class="text-xs hover:text-indigo-400 transition-colors">Home</a></li>
+          <li><a href="/explored/explore" class="text-xs hover:text-indigo-400 transition-colors">Explore</a></li>
+        </ul>
       </div>
 
-    </div>
-  </div>
+      <div class="col-span-1">
+        <h3 class="text-xs font-bold text-white tracking-wider uppercase mb-3">Company</h3>
+        <ul class="space-y-2">
+          <li><a href="/explored/about" class="text-xs hover:text-indigo-400 transition-colors">About Us</a></li>
+          <li><a href="/explored/contact" class="text-xs hover:text-indigo-400 transition-colors">Contact Support</a></li>
+        </ul>
+      </div>
 
-  <div class="border-t border-slate-200 py-4 text-center text-sm text-slate-500">
-    © 2025 Explored. All rights reserved.
+      <div class="col-span-1">
+        <h3 class="text-xs font-bold text-white tracking-wider uppercase mb-3">Legal</h3>
+        <ul class="space-y-2">
+          <li><a href="/explored/privacy-policy" class="text-xs hover:text-indigo-400 transition-colors">Privacy Policy</a></li>
+          <li><a href="/explored/terms-and-conditions" class="text-xs hover:text-indigo-400 transition-colors">Terms of Service</a></li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="border-t border-slate-800 pt-6 flex justify-center items-center">
+      <p class="text-xs text-slate-400">
+        &copy; <?php echo date('Y'); ?> Explored. All rights reserved.
+      </p>
+    </div>
   </div>
 </footer>
 <?php endif; ?>

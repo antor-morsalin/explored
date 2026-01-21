@@ -15,6 +15,7 @@ $conn->select_db("explored");
 
 $conn->query("DROP TABLE IF EXISTS log_sections");
 $conn->query("DROP TABLE IF EXISTS travel_logs");
+$conn->query("DROP TABLE IF EXISTS contact_messages");
 $conn->query("DROP TABLE IF EXISTS users");
 
 
