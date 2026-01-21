@@ -4,7 +4,8 @@
 
     namespace App\Controllers;
 
-    use Framework\TemplateEngine;
+use App\Middlewares\AuthMiddleware;
+use Framework\TemplateEngine;
     use App\Model\Database;
     use App\Model\{LogModel, LogSectionModel, UserModel, CommentModel};
     use App\Middlewares\LogMiddleWare;
@@ -18,6 +19,7 @@
         private LogSectionModel $logSectionModel;
         private CommentModel $commentModel;
         private LogMiddleWare $logMiddleWare;
+        private AuthMiddleware $authMiddleWare;
 
 
         public function __construct()
@@ -30,10 +32,12 @@
             $this -> logSectionModel = new LogSectionModel($conn);
             $this -> commentModel = new CommentModel($conn);
             $this -> logMiddleWare = new LogMiddleWare();
+            $this -> authMiddleWare = new AuthMiddleWare();
         }
 
         public function logsView()
         {
+            $this -> authMiddleWare -> requireLogin();
             $this -> view -> addData('title', 'Logs');
             $totalLogs = $this -> logModel -> getTotalLogs();
             $this -> view -> addData('totalLogs', $totalLogs);
@@ -51,6 +55,7 @@
 
         public function postLog()  
         {
+            $this -> authMiddleWare -> requireLogin();  
             $this -> logMiddleWare -> validateLogData();
 
             $ownerId = getAuth('userId');
@@ -68,6 +73,8 @@
         {
             $logId = $_GET['params']['id'];
             $log = $this -> logModel -> getLog($logId);
+
+            if(!$log) redirect('/explored/explore');
             $ownerName = $this -> userModel -> getUserName($log['owner_id']);
             $log['ownerName'] = $ownerName;
             return $log;
@@ -77,6 +84,15 @@
         {
             $this -> view -> addData('title', 'Log');
             $log = $this -> getFullLog();
+
+            $currentUserId = getAuth('userId'); // Returns null if guest
+            
+            if ($log['published'] == 0 && $log['owner_id'] !== $currentUserId) {
+                setFlash('error', 'This log is private or does not exist.');
+                redirect('/explored/explore');
+                return;
+            }
+
             $this -> view -> addData('log', $log);
 
             $logSections = $this -> logSectionModel -> getAllLogSections($_GET['params']['id']);
@@ -97,6 +113,7 @@
 
         public function publishLog()
         {
+            $this -> authMiddleWare -> requireLogin();
             $logId = $_GET['params']['id'];
             $this -> logModel -> publishLog($logId);
             setFlash('success', "Your travel log was published and now all users can see it");
