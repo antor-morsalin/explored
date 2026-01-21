@@ -49,7 +49,7 @@
             echo $this -> view -> render("createLog.php");
         }
 
-        public function postLog()
+        public function postLog()  
         {
             $this -> logMiddleWare -> validateLogData();
 
