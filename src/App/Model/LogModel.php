@@ -130,6 +130,33 @@
 
             return $result->fetch_all(MYSQLI_ASSOC);
         }
+        
+
+        public function findAllForAdmin()
+        {
+            // Fetch logs WITH the username of the owner
+            $sql = "SELECT l.*, u.username 
+                    FROM travel_logs l 
+                    JOIN users u ON l.owner_id = u.id 
+                    ORDER BY l.created_at DESC";
+            
+            $result = $this->conn->query($sql);
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function delete(int $id)
+        {
+            $statement = $this->conn->prepare("DELETE FROM travel_logs WHERE id = ?");
+            $statement->bind_param("i", $id);
+            $statement->execute();
+        }
+
+        public function countAll(): int
+        {
+            $sql = "SELECT COUNT(*) as total FROM travel_logs";
+            $result = $this->conn->query($sql);
+            return (int) $result->fetch_assoc()['total'];
+        }
 
 
     }

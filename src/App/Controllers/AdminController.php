@@ -5,7 +5,7 @@
 
     use Framework\TemplateEngine;
     use App\Middlewares\AuthMiddleware;
-    use App\Model\{Database, UserModel, MessageModel};
+    use App\Model\{Database, UserModel, MessageModel, LogModel};
     use mysqli;
 
     class AdminController
@@ -27,10 +27,11 @@
         {
             $userModel = new UserModel($this->conn);
             $messageModel = new MessageModel($this->conn);
-
+            $logModel = new LogModel($this->conn);
             $stats = [
                 'total_users' => $userModel->countAll(),
-                'total_messages' => $messageModel->countAll()
+                'total_messages' => $messageModel->countAll(),
+                'total_logs' => $logModel->countAll()
             ];
 
             $this->view->addData('title', 'Admin Dashboard');
@@ -55,6 +56,29 @@
 
             $this->view->addData('title', 'User Management');
             $this->renderAdminView("admin/users.php", ['users' => $users]);
+        }
+
+        public function logsView()
+        {
+            $logModel = new LogModel($this->conn);
+            $logs = $logModel->findAllForAdmin();
+
+            $this->view->addData('title', 'Manage Logs');
+            $this->renderAdminView("admin/logs.php", ['logs' => $logs]);
+        }
+
+        public function deleteLog()
+        {
+            $id = (int) ($_POST['id'] ?? 0);
+            
+            if ($id) {
+                $logModel = new LogModel($this->conn);
+                // Optional: Check if log exists first
+                $logModel->delete($id);
+                setFlash('success', "Travel Log #{$id} has been deleted.");
+            }
+
+            redirect("/explored/admin/logs");
         }
 
         public function deleteUser()

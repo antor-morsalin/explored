@@ -33,7 +33,9 @@
     $app -> get('/explored/admin/users', [AdminController::class, 'usersView']);
     
     $app -> post('/explored/admin/users', [AdminController::class, 'deleteUser']);
-
+    $app -> get('/explored/admin/logs', [AdminController::class, 'logsView']);
+    $app -> post('/explored/admin/logs', [AdminController::class, 'deleteLog']);
+    
     $app -> get('/explored/logout', [AuthController::class, 'logout']);
     
     // --- PROFILE ROUTES ---
