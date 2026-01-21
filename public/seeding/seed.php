@@ -11,8 +11,15 @@ $conn->query("CREATE DATABASE IF NOT EXISTS explored");
 $conn->set_charset("utf8mb4");
 $conn->select_db("explored");
 
-// ✨ FIX: Drop 'travel_logs' FIRST because it references 'users'
+
+
+$conn->query("DROP TABLE IF EXISTS log_sections");
 $conn->query("DROP TABLE IF EXISTS travel_logs");
+$conn->query("DROP TABLE IF EXISTS users");
+
+
+
+
 
 // TABLE 1: USERS (With Role)
 $conn->query("DROP TABLE IF EXISTS users");
@@ -36,7 +43,7 @@ foreach ($users as [$username, $password, $role]) {
 }
 
 // TABLE 2: CONTACT MESSAGES
-$conn->query("DROP TABLE IF EXISTS contact_messages");
+
 $conn->query("
     CREATE TABLE contact_messages (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -58,7 +65,7 @@ foreach ($contact_messages as [$name, $email, $subject, $message]) {
 }
 
 // TABLE 3: TRAVEL LOGS
-// (Drop statement removed from here since we moved it to the top)
+
 $conn->query("
     CREATE TABLE travel_logs (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -86,8 +93,38 @@ foreach ($travel_logs as [$owner_id, $title, $description, $journey_type]) {
     $statement->execute();
 }
 
+
+
+
+// TABLE 4: LOG SECTIONS
+$conn->query("
+    CREATE TABLE log_sections (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        owner_id INT NOT NULL,
+        log_id INT NOT NULL,
+        place_name VARCHAR(150) NOT NULL,
+        place_type VARCHAR(50) NOT NULL,
+        map_link VARCHAR(255) DEFAULT 'Not Mentioned',
+        avg_cost DECIMAL(10,2) NOT NULL,
+        rating TINYINT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+        CONSTRAINT section_owner
+            FOREIGN KEY (owner_id)
+            REFERENCES users(id)
+            ON DELETE CASCADE,
+
+        CONSTRAINT section_log
+            FOREIGN KEY (log_id)
+            REFERENCES travel_logs(id)
+            ON DELETE CASCADE
+    ) ENGINE=InnoDB
+");
+
+
 echo "Seeding completed successfully!\n";
 echo "- 'users' table created with 'role' column.\n";
 echo "- 'contact_messages' table created.\n";
 echo "- 'travel_logs' table created.\n";
+echo "- 'log_sections' table created.\n";
 ?>

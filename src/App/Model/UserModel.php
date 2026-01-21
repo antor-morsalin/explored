@@ -102,6 +102,23 @@
             $stmt->bind_param("si", $hashedPassword, $id);
             $stmt->execute();
         }
+
+        public function getUserName(mixed $id)
+        {
+            $statement = $this->conn->prepare(
+                "SELECT username
+                FROM users
+                WHERE id = ?
+                LIMIT 1"
+            );
+
+            $statement->bind_param("i", $id);
+            $statement->execute();
+
+            $result = $statement->get_result()->fetch_assoc();
+
+            return $result['username'] ;
+        }
     }
     
 ?>

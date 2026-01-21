@@ -6,14 +6,16 @@
 
     use Framework\TemplateEngine;
     use App\Model\Database;
-    use App\Model\LogModel;
+    use App\Model\{LogModel, LogSectionModel, UserModel};
     use App\Middlewares\LogMiddleWare;
 
     class LogController
     {
         private TemplateEngine $view ;
         private Database $db;
+        private UserModel $userModel;
         private LogModel $logModel;
+        private LogSectionModel $logSectionModel;
         private LogMiddleWare $logMiddleWare;
 
         public function __construct()
@@ -21,7 +23,9 @@
             $this -> view = new TemplateEngine(__DIR__."/../views");
             $this -> db = new Database();
             $conn = $this -> db -> connection();
+            $this -> userModel = new UserModel($conn);
             $this -> logModel = new LogModel($conn);
+            $this -> logSectionModel = new LogSectionModel($conn);
             $this -> logMiddleWare = new LogMiddleWare();
         }
 
@@ -57,12 +61,27 @@
             redirect('/explored/logs');
         }
 
+        private function getFullLog()
+        {
+            $logId = $_GET['params']['id'];
+            $log = $this -> logModel -> getLog($logId);
+            $ownerName = $this -> userModel -> getUserName($log['owner_id']);
+            $log['ownerName'] = $ownerName;
+            return $log;
+        }
+
         public function logView()
         {
             $this -> view -> addData('title', 'Log');
-            $this -> view -> addData('params', $_GET['params']);
+            $log = $this -> getFullLog();
+            $this -> view -> addData('log', $log);
+
+            $logSections = $this -> logSectionModel -> getAllLogSections($_GET['params']['id']);
+            $this -> view -> addData('logSections', $logSections);
             echo $this -> view -> render("log.php");
         }
+
+    
 
 
     }

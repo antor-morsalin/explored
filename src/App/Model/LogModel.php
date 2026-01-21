@@ -65,6 +65,23 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
+        public function getLog(mixed $logId)
+        {
+            $statement = $this->conn->prepare(
+                "SELECT id, owner_id, title, description, journey_type, published, created_at
+                FROM travel_logs
+                WHERE id = ?
+                LIMIT 1"
+            );
+
+            $statement->bind_param("i", $logId);
+            $statement->execute();
+
+            $result = $statement->get_result()->fetch_assoc();
+
+            return $result ;
+        }
+
 
     }
     

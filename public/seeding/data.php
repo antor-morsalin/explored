@@ -16,9 +16,9 @@ $contact_messages = [
 
 $travel_logs = [
     // owner_id, title, description, journey_type
-    [1, "Weekend in Cox’s Bazar", "A short beach getaway with family.", "family"],
-    [1, "Dhaka Food Trail", "Exploring street food and local restaurants.", "solo"],
-    [2, "Business Trip to Singapore", "Meetings, hotels, and city walks.", "business"],
-    [2, "Sylhet Nature Escape", "Tea gardens, hills, and waterfalls.", "leisure"]
+    [3, "Weekend in Cox’s Bazar", "A short beach getaway with family.", "family"],
+    [3, "Dhaka Food Trail", "Exploring street food and local restaurants.", "solo"],
+    [4, "Business Trip to Singapore", "Meetings, hotels, and city walks.", "business"],
+    [4, "Sylhet Nature Escape", "Tea gardens, hills, and waterfalls.", "leisure"]
 ];
 ?>

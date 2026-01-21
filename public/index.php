@@ -6,7 +6,7 @@
     require __DIR__ . "/../vendor/autoload.php";
 
     use Framework\App;
-    use App\Controllers\{HomeController, AuthController, AdminController, LogController, ProfileController};
+    use App\Controllers\{HomeController, AuthController, AdminController, LogController, ProfileController, LogSectionController};
 
     $app = new App();
 
@@ -47,6 +47,16 @@
     $app -> get('/explored/createlog', [LogController::class, 'createLogView']);
     $app -> post('/explored/logs', [LogController::class, 'postLog']);
     $app -> get('/explored/logs/:id', [LogController::class, 'logView']);
+    
+
+
+    // Log Section Routes
+    $app -> get('/explored/logs/:id/new', [LogSectionController::class, 'newSectionView']);
+    $app -> post('/explored/logs/:id/new', [LogSectionController::class, 'postNewSection']);
+
+
+
+
     
     $app->run();
 ?>
