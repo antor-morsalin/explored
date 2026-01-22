@@ -13,30 +13,15 @@
             $this -> conn = $conn;
         }
 
-        public function saveLogSection(
-            mixed $ownerId,
-            mixed $logId,
-            string $placeName,
-            string $placeType,
-            string $mapLink,
-            mixed $avgCost,
-            mixed $rating
-        ) {
+        public function saveLogSection(mixed $ownerId, mixed $logId, string $placeName, string $placeType,string $mapLink, mixed $avgCost, mixed $rating
+        ) 
+        {
             $statement = $this->conn->prepare(
                 "INSERT INTO log_sections (owner_id, log_id, place_name, place_type, map_link, avg_cost, rating)
                 VALUES (?, ?, ?, ?, ?, ?, ?)"
             );
 
-            $statement->bind_param(
-                "iisssdi",
-                $ownerId,
-                $logId,
-                $placeName,
-                $placeType,
-                $mapLink,
-                $avgCost,
-                $rating
-            );
+            $statement->bind_param("iisssdi", $ownerId, $logId, $placeName, $placeType, $mapLink, $avgCost, $rating);
 
             $statement->execute();
         }

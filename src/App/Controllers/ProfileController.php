@@ -37,7 +37,7 @@
             echo $this->view->render("profile/index.php", ['user' => $this->user, 'stats' => $stats]);
         }
 
-        // 2. My Travel Logs Page
+        // user travel logs
         public function logsView()
         {
             $this->view->addData('title', 'My Travel Logs');

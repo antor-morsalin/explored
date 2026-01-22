@@ -10,7 +10,7 @@
 
     $app = new App();
 
-    // --- HOME & AUTH ROUTES ---
+    // home , registration, login routes
     $app -> get('/explored', [HomeController::class, 'homeView']);
 
     $app -> get('/explored/register', [AuthController::class, 'registerView']);
@@ -27,7 +27,7 @@
 
     $app -> get('/explored/api/check-username', [AuthController::class, 'checkUsername']);
 
-    // --- ADMIN ROUTES ---
+    // admin routes here
     $app -> get('/explored/admin/dashboard', [AdminController::class, 'dashboardView']);
     $app -> get('/explored/admin/messages', [AdminController::class, 'messagesView']);
     $app -> get('/explored/admin/users', [AdminController::class, 'usersView']);
@@ -38,13 +38,13 @@
     
     $app -> get('/explored/logout', [AuthController::class, 'logout']);
     
-    // --- PROFILE ROUTES ---
+    // profile route
     $app -> get('/explored/profile', [ProfileController::class, 'indexView']);
     
     $app -> get('/explored/profile/settings', [ProfileController::class, 'settingsView']);
     $app -> post('/explored/profile/password', [ProfileController::class, 'updatePassword']);
 
-    // --- LOG ROUTES ---
+    // all log routes
     $app -> get('/explored/logs', [LogController::class, 'logsView']);
     $app -> get('/explored/createlog', [LogController::class, 'createLogView']);
     $app -> post('/explored/logs', [LogController::class, 'postLog']);

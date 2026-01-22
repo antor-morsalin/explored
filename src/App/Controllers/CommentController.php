@@ -30,7 +30,8 @@
             $comment = $_POST['comment'];
             $logId = $_GET['params']['id'];
             
-            if (!isLoggedIn()) {
+            if (!isLoggedIn()) 
+            {
                 setFlash('error', 'Only a valid user can comment on the post');
                 redirect("/explored/logs/{$logId}");
                 return;

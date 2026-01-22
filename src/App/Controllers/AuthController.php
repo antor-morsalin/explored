@@ -66,9 +66,12 @@
             setAuth('userId', $user['id']);
             setAuth('role', $user['role']); 
             
-            if ($user['role'] === 'admin') {
+            if ($user['role'] == 'admin') 
+            {
                 redirect("/explored/admin/dashboard"); 
-            } else {
+            } 
+            else 
+            {
                 redirect("/explored");
             }
         }

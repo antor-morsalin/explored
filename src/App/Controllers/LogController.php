@@ -93,9 +93,10 @@ use Framework\TemplateEngine;
             $this -> view -> addData('title', 'Log');
             $log = $this -> getFullLog();
 
-            $currentUserId = getAuth('userId'); // Returns null if guest
+            $userId = getAuth('userId'); 
             
-            if ($log['published'] == 0 && $log['owner_id'] !== $currentUserId) {
+            if ($log['published'] == 0 && $log['owner_id'] !== $userId) 
+            {
                 setFlash('error', 'This log is private or does not exist.');
                 redirect('/explored/explore');
                 return;
@@ -138,10 +139,7 @@ use Framework\TemplateEngine;
 
         public function exploreView()
         {
-            $logs = $this->logModel->exploreLogs(
-                $_GET['search'] ?? null,
-                $_GET['sort'] ?? null
-            );
+            $logs = $this->logModel->exploreLogs($_GET['search'] ?? null,$_GET['sort'] ?? null);
 
             foreach ($logs as &$log)
             {
