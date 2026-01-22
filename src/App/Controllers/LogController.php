@@ -8,7 +8,7 @@ use App\Middlewares\AuthMiddleware;
 use Framework\TemplateEngine;
     use App\Model\Database;
     use App\Model\{LogModel, LogSectionModel, UserModel, CommentModel, WishlistModel};
-    use App\Middlewares\{LogMiddleWare, AuthMiddleware};
+    use App\Middlewares\LogMiddleWare;
 
     class LogController
     {

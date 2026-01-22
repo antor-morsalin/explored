@@ -30,7 +30,6 @@
         <?php if (isLoggedIn()): ?>
             <a
               href="/explored/logout"
-              onclick="return confirm('Are you sure you want to Log out?')"
               class="inline-flex items-center rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 active:bg-red-800 transition shadow-sm"
             >
               Logout

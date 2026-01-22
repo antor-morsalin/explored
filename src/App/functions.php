@@ -62,8 +62,13 @@
 
     function logout()
     {
-        session_unset();
-        session_destroy();
+        $role = getAuth('role');
+        unset($_SESSION['auth']);
+        
+        if ($role !== 'admin') {
+            setFlash('success', "Safe travels! You've been logged out. Come back soon to explore more.");
+        }
+
         redirect("/explored");
     }
     

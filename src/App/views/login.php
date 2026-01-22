@@ -52,10 +52,7 @@
                     </a>
                 </label> -->
             </div>
-
-            <a href="/forgot-password" class="text-sm font-medium text-slate-600 hover:text-slate-900 hover:underline underline-offset-2 transition-colors">
-                Forgot password?
-            </a>
+            
         </div>
       </div>
 
