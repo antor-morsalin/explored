@@ -17,13 +17,13 @@
 
     <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700">
       <a href="/explored/" class="hover:text-slate-900 transition">Home</a>
-      <a href="/explored/logs" class="hover:text-slate-900 transition">Logs</a>
       <a href="/explored/explore" class="hover:text-slate-900 transition">Explore</a>
-      
       <?php if (isLoggedIn()): ?>
+        <a href="/explored/logs" class="hover:text-slate-900 transition">Logs</a>
         <a href="/explored/wishlist" class="hover:text-slate-900 transition">Wishlist</a>
         <a href="/explored/profile/settings" class="hover:text-slate-900 transition">Settings</a>
       <?php endif; ?>
+      
     </div>
 
     <div>

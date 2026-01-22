@@ -4,7 +4,7 @@
 
     namespace App\Controllers;
 
-use App\Middlewares\AuthMiddleware;
+
 use Framework\TemplateEngine;
     use App\Model\Database;
     use App\Model\{LogModel, LogSectionModel, UserModel, CommentModel, WishlistModel};
@@ -136,17 +136,24 @@ use Framework\TemplateEngine;
 
         public function exploreView()
         {
-            $logs = $this -> logModel -> exploreLogs();
-            foreach($logs as &$log)
+            $logs = $this->logModel->exploreLogs(
+                $_GET['search'] ?? null,
+                $_GET['sort'] ?? null
+            );
+
+            foreach ($logs as &$log)
             {
-                $log['avgCost'] = $this -> logModel -> getAvgCost($log['id']);
-                $log['avgRating'] = round((float) $this -> logModel -> getAvgRating($log['id']));
-                $log['ownerName'] = $this -> userModel -> getUserName($log['owner_id']); 
+                $log['avgCost'] = $this->logModel->getAvgCost($log['id']);
+                $log['avgRating'] = round((float) $this->logModel->getAvgRating($log['id']));
+                $log['ownerName'] = $this->userModel->getUserName($log['owner_id']);
             }
-            $this -> view -> addData('title', "Explore");
-            $this -> view -> addData('logs', $logs);
-            echo $this -> view -> render("explore.php");
+
+            $this->view->addData('title', "Explore");
+            $this->view->addData('logs', $logs);
+            echo $this->view->render("explore.php");
         }
+
+
 
     
     }

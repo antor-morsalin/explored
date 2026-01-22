@@ -42,7 +42,7 @@
         </p>
 
         <div class="mt-8">
-            <a href="/explored" class="rounded-full bg-white/90 text-slate-900 px-8 py-3 font-semibold hover:bg-white transition-colors">
+            <a href="/explored/explore" class="rounded-full bg-white/90 text-slate-900 px-8 py-3 font-semibold hover:bg-white transition-colors">
                 Start Exploring
             </a>
          </div>

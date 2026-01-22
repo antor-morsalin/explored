@@ -115,22 +115,42 @@
             return $result['total_cost'];
         }
 
-        public function exploreLogs()
+        public function exploreLogs($search = null, $sort = null)
         {
-            $statement = $this->conn->prepare(
-                "SELECT id, owner_id, title, description, journey_type, published, created_at
-                FROM travel_logs
-                WHERE published = 1
-                ORDER BY created_at DESC"
-            );
+            $query = "SELECT id, owner_id, title, description, journey_type, published, created_at
+                    FROM travel_logs
+                    WHERE published = 1";
+
+            $params = [];
+            $types  = "";
+
+            if ($search) {
+                $query .= " AND (title LIKE ? OR description LIKE ? OR journey_type LIKE ?)";
+                $like = "%{$search}%";
+                array_push($params, $like, $like, $like);
+                $types = "sss";
+            }
+
+            if ($sort === "oldest") {
+                $query .= " ORDER BY created_at ASC";
+            }
+
+            if (!$sort || $sort === "newest") {
+                $query .= " ORDER BY created_at DESC";
+            }
+
+            $statement = $this->conn->prepare($query);
+
+            if ($params) {
+                $statement->bind_param($types, ...$params);
+            }
 
             $statement->execute();
-
             $result = $statement->get_result();
 
             return $result->fetch_all(MYSQLI_ASSOC);
         }
-        
+
 
         public function findAllForAdmin()
         {

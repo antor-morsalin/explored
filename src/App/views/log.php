@@ -34,6 +34,7 @@
                 </button>
             </a>
         <?php } ?>
+        <?php if (isLoggedIn() && getAuth('role')=='user'){ ?>
         <?php if (!$log['published']){ ?>
             <form action=<?php echo "/explored/logs/{$log['id']}/publish" ?> method="post">
                 <button class="mt-6 text-black w-full bg-white border border-black py-3 text-sm font-medium hover:bg-black hover:text-white transition">
@@ -52,6 +53,7 @@
                     Remove from wishlist
                 </button>
             </form>
+        <?php } ?>
         <?php } ?>
         <div class="max-w-5xl">
             <h2 class="text-2xl font-semibold tracking-tight mb-6">
@@ -117,6 +119,7 @@
     <div class="flex flex-col gap-6 border-gray-300 lg:w-[360px] lg:shrink-0">
 
         <!-- Prompt -->
+         <?php if (isLoggedIn() && getAuth('role')=='user'){ ?>
         <p class="text-base font-medium text-gray-800 text-xl">
             Leave your comment
         </p>
@@ -139,6 +142,7 @@
                 Comment
             </button>
         </form>
+        <?php } ?>
 
 
         <!-- Comments section -->   
@@ -174,6 +178,7 @@
             </div>
         </div>
          <?php } ?>
+         
 
 
     </div>
