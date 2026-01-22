@@ -12,7 +12,6 @@
         <h3 class="text-xl font-semibold">Average cost per person ৳<?php echo $avgCost; ?></h3>
         <h3 class="text-xl font-semibold">Overall Rating: <?php echo $avgRating; ?>/5 </h3>
 
-        <!-- Meta info -->
         <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
             <span><?php echo $log['ownerName']; ?></span>
             <span class="hidden sm:inline">•</span>
@@ -21,12 +20,10 @@
             <span><?php echo $log['journey_type']; ?></span>
         </div>
 
-        <!-- Description -->
         <p class="text-base leading-relaxed text-gray-800">
             <?php echo $log['description']; ?>
         </p>
 
-        <!-- Action -->
         <?php if (!$log['published']){ ?>
             <a href=<?php echo "/explored/logs/{$log['id']}/new" ?>>
                 <button class="mt-6 text-white w-full bg-black border border-black py-3 text-sm font-medium hover:bg-white hover:text-black transition">
@@ -35,7 +32,7 @@
             </a>
         <?php } ?>
         <?php if (!$log['published']){ ?>
-            <form action=<?php echo "/explored/logs/{$log['id']}/publish" ?> method="post">
+            <form action=<?php echo "/explored/logs/{$log['id']}/publish" ?> method="post" onsubmit="return confirm('Are you sure you want to publish this log? It will become visible to everyone.');">
                 <button class="mt-6 text-black w-full bg-white border border-black py-3 text-sm font-medium hover:bg-black hover:text-white transition">
                     Publish 
                 </button>
@@ -63,7 +60,6 @@
 
                     <div class="flex flex-col gap-3 flex-1">
 
-                        <!-- First row: title + cost -->
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-28">
                             <h3 class="text-xl font-semibold tracking-tight">
                                 <?php echo $logSection['place_name']; ?>
@@ -77,12 +73,10 @@
                             </p>
                         </div>
 
-                        <!-- Second row -->
                         <p class="text-sm text-gray-600">
                             Visited on <?php echo $logSection['created_at']; ?>
                         </p>
 
-                        <!-- Third row -->
                         <div class="text-sm text-gray-600">
                             Map link:
                             <?php if ($logSection['map_link']) { ?>
@@ -116,22 +110,20 @@
 
     <div class="flex flex-col gap-6 border-gray-300 lg:w-[360px] lg:shrink-0">
 
-        <!-- Prompt -->
         <p class="text-base font-medium text-gray-800 text-xl">
             Leave your comment
         </p>
 
-        <!-- Textarea -->
-        
-
-        <!-- Button -->
-        <form action=<?php echo "/explored/comment/{$log['id']}" ?> method="post">
+        <form id="commentForm" action=<?php echo "/explored/comment/{$log['id']}" ?> method="post" novalidate>
             <textarea
+                id="commentText"
                 name="comment"
                 rows="5"
-                class="w-full rounded-2xl border border-gray-300 p-5 text-sm text-gray-800 outline-none focus:border-black"
+                class="w-full rounded-2xl border border-gray-300 p-5 text-sm text-gray-800 outline-none focus:border-black transition-colors"
                 placeholder="Write your thoughts here..."
             ></textarea>
+            <p id="comment-error" class="text-xs text-red-500 mt-1 mb-2 hidden"></p>
+            
             <button
                 type="submit"
                 class="w-full rounded-2xl bg-black border border-black py-4 text-sm font-medium text-white hover:bg-white hover:text-black transition"
@@ -140,9 +132,26 @@
             </button>
         </form>
 
+        <script>
+            document.getElementById('commentForm').addEventListener('submit', function(e) {
+                const comment = document.getElementById('commentText');
+                const error = document.getElementById('comment-error');
+                
+                if (!comment.value.trim()) {
+                    e.preventDefault();
+                    error.textContent = "Please write a comment before submitting.";
+                    error.classList.remove('hidden');
+                    comment.classList.add('border-red-500');
+                    comment.focus();
+                } else {
+                    error.classList.add('hidden');
+                    comment.classList.remove('border-red-500');
+                }
+            });
+        </script>
 
-        <!-- Comments section -->   
-         <?php if(count($comments)){ ?>
+
+        <?php if(count($comments)){ ?>
         <div class="flex flex-col gap-4">
             <h2 class="text-xl font-semibold tracking-tight">
                 Comments
@@ -161,7 +170,7 @@
                                 <?php echo $comment['comment']; ?>
                             </p>
                             <?php if (getAuth('userId') == $comment['owner_id']) { ?>
-                                <form action=<?php echo "/explored/comment/{$comment['id']}/delete" ?> method="post">
+                                <form action=<?php echo "/explored/comment/{$comment['id']}/delete" ?> method="post" onsubmit="return confirm('Delete this comment?');">
                                     <button type="submit" class="inline-flex h-5 w-5 items-center justify-center rounded bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-xs" aria-label="Delete" title="Delete">×</button>
                                 </form>
                             <?php } ?>
