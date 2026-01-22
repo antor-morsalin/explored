@@ -37,10 +37,10 @@
 
             $logId = $_GET['params']['id'];
             $log = $this->logModel->getLog($logId);
-            $currentUserId = getAuth('userId');
+            $userId = getAuth('userId');
 
-            // SECURITY CHECK: Only owner can see add form
-            if ($log['owner_id'] !== $currentUserId) {
+            if ($log['owner_id'] !== $userId) 
+            {
                 setFlash('error', 'You cannot add sections to someone else\'s log.');
                 redirect("/explored/logs/{$logId}");
                 return;
@@ -60,7 +60,8 @@
             $logId     = $_GET['params']['id'];
 
             $log = $this->logModel->getLog($logId);
-            if ($log['owner_id'] !== $ownerId) {
+            if ($log['owner_id'] !== $ownerId) 
+            {
                 setFlash('error', 'You cannot add sections to someone else\'s log.');
                 redirect("/explored/logs/{$logId}");
                 return;
@@ -72,15 +73,8 @@
             $avgCost   = trim($_POST['avg_cost']);
             $rating    = trim($_POST['rating']);
 
-            $this->logSectionModel->saveLogSection(
-                $ownerId,
-                $logId,
-                $placeName,
-                $placeType,
-                $mapLink,
-                $avgCost,
-                $rating
-            );
+            $this->logSectionModel->saveLogSection($ownerId, $logId, $placeName, $placeType, $mapLink, 
+            $avgCost, $rating);
 
             setFlash('success', 'New section added to your travel log successfully');
             redirect("/explored/logs/{$logId}");

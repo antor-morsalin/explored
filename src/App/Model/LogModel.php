@@ -20,13 +20,7 @@
                 VALUES (?, ?, ?, ?)"
             );
 
-            $statement->bind_param(
-                "isss",
-                $ownerId,
-                $title,
-                $description,
-                $journeyType
-            );
+            $statement->bind_param("isss", $ownerId, $title, $description, $journeyType);
 
             $statement->execute();
         }
@@ -124,24 +118,28 @@
             $params = [];
             $types  = "";
 
-            if ($search) {
+            if ($search) 
+            {
                 $query .= " AND (title LIKE ? OR description LIKE ? OR journey_type LIKE ?)";
                 $like = "%{$search}%";
                 array_push($params, $like, $like, $like);
                 $types = "sss";
             }
 
-            if ($sort === "oldest") {
+            if ($sort === "oldest") 
+            {
                 $query .= " ORDER BY created_at ASC";
             }
 
-            if (!$sort || $sort === "newest") {
+            if (!$sort || $sort === "newest") 
+            {
                 $query .= " ORDER BY created_at DESC";
             }
 
             $statement = $this->conn->prepare($query);
 
-            if ($params) {
+            if ($params) 
+            {
                 $statement->bind_param($types, ...$params);
             }
 

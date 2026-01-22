@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 include __DIR__."/data.php";
 
@@ -24,7 +25,7 @@ $conn->query("DROP TABLE IF EXISTS users");
 
 
 
-// TABLE 1: USERS (With Role)
+// user table
 $conn->query("DROP TABLE IF EXISTS users");
 $conn->query("
     CREATE TABLE users (
@@ -35,9 +36,7 @@ $conn->query("
     )
 ");
 
-$statement = $conn->prepare(
-    "INSERT INTO users (username, password, role) VALUES (?, ?, ?)"
-);
+$statement = $conn->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
 
 foreach ($users as [$username, $password, $role]) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -45,7 +44,7 @@ foreach ($users as [$username, $password, $role]) {
     $statement->execute();
 }
 
-// TABLE 2: CONTACT MESSAGES
+// contact message table
 
 $conn->query("
     CREATE TABLE contact_messages (
@@ -58,16 +57,14 @@ $conn->query("
     )
 ");
 
-$stmt_msg = $conn->prepare(
-    "INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)"
-);
+$statement = $conn->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
 
 foreach ($contact_messages as [$name, $email, $subject, $message]) {
-    $stmt_msg->bind_param("ssss", $name, $email, $subject, $message);
-    $stmt_msg->execute();
+    $statement->bind_param("ssss", $name, $email, $subject, $message);
+    $statement->execute();
 }
 
-// TABLE 3: TRAVEL LOGS
+// travel_logs table
 
 $conn->query("
     CREATE TABLE travel_logs (
@@ -86,10 +83,7 @@ $conn->query("
     ) ENGINE=InnoDB
 ");
 
-$statement = $conn->prepare(
-    "INSERT INTO travel_logs (owner_id, title, description, journey_type)
-     VALUES (?, ?, ?, ?)"
-);
+$statement = $conn->prepare("INSERT INTO travel_logs (owner_id, title, description, journey_type) VALUES (?, ?, ?, ?)");
 
 foreach ($travel_logs as [$owner_id, $title, $description, $journey_type]) {
     $statement->bind_param("isss", $owner_id, $title, $description, $journey_type);
@@ -99,7 +93,7 @@ foreach ($travel_logs as [$owner_id, $title, $description, $journey_type]) {
 
 
 
-// TABLE 4: LOG SECTIONS
+// log_sections table
 $conn->query("
     CREATE TABLE log_sections (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -125,7 +119,7 @@ $conn->query("
 ");
 
 
-// TABLE 5: COMMENTS
+// comments table
 $conn->query("
     CREATE TABLE comments (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -147,7 +141,7 @@ $conn->query("
 ");
 
 
-// TABLE 6: WISHLIST
+// wishlist table
 $conn->query("
     CREATE TABLE wishlist (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -169,15 +163,6 @@ $conn->query("
     ) ENGINE=InnoDB
 ");
 
-
-
-echo "Seeding completed successfully!\n";
-echo "- 'users' table created with 'role' column.\n";
-echo "- 'contact_messages' table created.\n";
-echo "- 'travel_logs' table created.\n";
-echo "- 'log_sections' table created.\n";
-echo "- 'comments' table created.\n";
-echo "- 'wishlist' table created.\n";
 
 
 ?>

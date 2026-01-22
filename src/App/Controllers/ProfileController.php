@@ -24,11 +24,7 @@
             $this->user = $this->fetchCurrentUser();
         }
         
-        public function logsView()
-        {
-            $this->view->addData('title', 'My Travel Logs');
-            echo $this->view->render("profile/logs.php", ['user' => $this->user]);
-        }
+        
         
         public function settingsView()
         {
