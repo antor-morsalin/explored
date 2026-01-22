@@ -73,7 +73,6 @@
             
             if ($id) {
                 $logModel = new LogModel($this->conn);
-                // Optional: Check if log exists first
                 $logModel->delete($id);
                 setFlash('success', "Travel Log #{$id} has been deleted.");
             }
@@ -83,7 +82,6 @@
 
         public function deleteUser()
         {
-            // Note: $this->authMiddleWare->requireAdmin() is already called in __construct
 
             $id = (int) ($_POST['id'] ?? 0);
             
@@ -113,10 +111,7 @@
 
             redirect("/explored/admin/users");
         }
-
-        /**
-         * Helper function to render admin views with standard flags
-         */
+        
         private function renderAdminView(string $path, array $data = [])
         {
             $adminFlags = [

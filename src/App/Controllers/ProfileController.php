@@ -23,30 +23,13 @@
             $this->conn = $db->connection();
             $this->user = $this->fetchCurrentUser();
         }
-
-        // 1. Dashboard / Overview
-        public function indexView()
-        {
-            // Placeholders for counts (You can connect these to real Models later)
-            $stats = [
-                'logs_count' => 0,     // e.g. $logModel->countByUser($user['id'])
-                'wishlist_count' => 0  // e.g. $wishlistModel->countByUser($user['id'])
-            ];
-
-            $this->view->addData('title', 'My Profile');
-            echo $this->view->render("profile/index.php", ['user' => $this->user, 'stats' => $stats]);
-        }
-
-        // 2. My Travel Logs Page
+        
         public function logsView()
         {
             $this->view->addData('title', 'My Travel Logs');
             echo $this->view->render("profile/logs.php", ['user' => $this->user]);
         }
-
         
-
-        // 4. Settings Page
         public function settingsView()
         {
             $this->view->addData('title', 'Account Settings');

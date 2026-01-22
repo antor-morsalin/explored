@@ -1,6 +1,39 @@
 <?php include $this->resolve("partials/_header.php") ?>
 
 <main class="max-w-4xl mx-auto px-6 py-12">
+    <form method="GET" action="" class="mb-12">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center gap-4">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search by title, description, or journey type..."
+                class="flex-1 min-w-[220px] rounded-full border border-gray-300 px-6 py-3 text-base
+                    focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+            />
+
+            <select
+                name="sort"
+                class="w-48 rounded-full border border-gray-300 px-5 py-3 text-base bg-white
+                    focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+            >
+                <option value="">Sort by</option>
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+            </select>
+
+            <button
+                type="submit"
+                class="rounded-full border border-black px-6 py-3 text-base font-medium
+                    hover:bg-black hover:text-white transition"
+            >
+                Apply
+            </button>
+
+        </div>
+    </form>
+
+
 
     <section class="space-y-8">
         <?php foreach ($logs as $log) { ?>

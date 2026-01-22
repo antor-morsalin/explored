@@ -52,7 +52,7 @@
 
             // $_SESSION['flash'] = ['success' => "Message sent! We'll get back to you soon."];
             setFlash('success', "Message sent! We'll get back to you soon.");
-            header("Location: /explored/contact");
+            redirect("/explored/contact");  
             exit;
         }
     }
