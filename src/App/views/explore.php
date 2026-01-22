@@ -4,12 +4,7 @@
     <form method="GET" action="" class="mb-12">
         <div class="max-w-4xl mx-auto flex flex-wrap items-center gap-4">
 
-            <input
-                type="text"
-                name="search"
-                placeholder="Search by title, description, or journey type..."
-                class="flex-1 min-w-[220px] rounded-full border border-gray-300 px-6 py-3 text-base
-                    focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+            <input type="text" name="search" placeholder="Search by title, description, or journey type..." class="flex-1 min-w-[220px] rounded-full border border-gray-300 px-6 py-3 text-base focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
             />
 
             <select

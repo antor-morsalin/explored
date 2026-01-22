@@ -2,7 +2,6 @@
 
 <main class="mx-auto max-w-6xl px-6 py-14">
 
-  <!-- header -->
   <section class="border-b pb-10">
     <div class="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
       <div class="max-w-2xl">
@@ -36,14 +35,13 @@
     </div>
   </section>
 
-  <!-- list -->
   <section class="pt-10">
     <div class="flex items-center justify-between">
       <h2 class="text-lg font-medium">My logs</h2>
     </div>
   
     <div class="mt-6 max-h-[560px] overflow-y-auto space-y-4">
-      <!-- log item -->
+    
        <?php foreach($logs as $log){ ?>
         <a href= <?php echo "/explored/logs/{$log['id']}"; ?> class="block rounded-lg border p-5 hover:bg-slate-50">
           <div class="flex w-full justify-between">
@@ -61,15 +59,6 @@
         </a>
        <?php } ?>
       
-
-      <!-- empty state -->
-      <!--
-      <div class="rounded-lg border border-dashed p-14 text-center">
-        <p class="text-base text-slate-600">
-          You haven’t created any logs yet.
-        </p>
-      </div>
-      -->
     </div>
   </section>
 

@@ -119,19 +119,10 @@
         </p>
 
         <form id="commentForm" action=<?php echo "/explored/comment/{$log['id']}" ?> method="post" novalidate>
-            <textarea
-                id="commentText"
-                name="comment"
-                rows="5"
-                class="w-full rounded-2xl border border-gray-300 p-5 text-sm text-gray-800 outline-none focus:border-black transition-colors"
-                placeholder="Write your thoughts here..."
-            ></textarea>
+            <textarea id="commentText" name="comment" rows="5" class="w-full rounded-2xl border border-gray-300 p-5 text-sm text-gray-800 outline-none focus:border-black transition-colors" placeholder="Write your thoughts here..."></textarea>
             <p id="comment-error" class="text-xs text-red-500 mt-1 mb-2 hidden"></p>
             
-            <button
-                type="submit"
-                class="w-full rounded-2xl bg-black border border-black py-4 text-sm font-medium text-white hover:bg-white hover:text-black transition"
-            >
+            <button type="submit" class="w-full rounded-2xl bg-black border border-black py-4 text-sm font-medium text-white hover:bg-white hover:text-black transition">
                 Comment
             </button>
         </form>

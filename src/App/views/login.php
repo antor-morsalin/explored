@@ -11,55 +11,18 @@
     <form action="/explored/login" method="POST" onsubmit="return validateForm()" class="mt-6 space-y-4" novalidate>
       <div>
         <label for="username" class="block text-sm font-medium text-slate-700">Username</label>
-        <input
-          id="username"
-          name="username"
-          type="text"
-          required
-          autocomplete="username"
-          placeholder="e.g., jannatmim"
-          class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition-all focus:ring-4 focus:ring-slate-200 focus:border-slate-400"
-        />
+        <input id="username" name="username" type="text" required autocomplete="username"
+          placeholder="e.g., antor" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition-all focus:ring-4 focus:ring-slate-200 focus:border-slate-400"/>
         <p id="username-error" class="mt-1 text-xs text-red-500 hidden"></p>
       </div>
 
       <div>
         <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          autocomplete="current-password"
-          placeholder="Your password"
-          class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition-all focus:ring-4 focus:ring-slate-200 focus:border-slate-400"
-        />
+        <input id="password" name="password" type="password" required autocomplete="current-password" placeholder="Your password" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition-all focus:ring-4 focus:ring-slate-200 focus:border-slate-400"/>
         <p id="password-error" class="mt-1 text-xs text-red-500 hidden"></p>
         
-        <div class="mt-3 flex items-center justify-between">
-            <div class="flex items-center">
-                <!-- <input 
-                    id="terms" 
-                    name="terms" 
-                    type="checkbox" 
-                    required
-                    class="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-200 transition-colors cursor-pointer"
-                >
-                <label for="terms" class="ml-2 text-sm text-slate-600 select-none">
-                    Accept 
-                    <a href="/terms-and-conditions" class="font-medium text-slate-900 hover:underline underline-offset-2">
-                        terms and conditions
-                    </a>
-                </label> -->
-            </div>
-            
-        </div>
-      </div>
 
-      <button
-        type="submit"
-        class="w-full rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 active:bg-slate-950 transition-colors"
-      >
+      <button type="submit" class="mt-6 w-full rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 active:bg-slate-950 transition-colors">
         Log in
       </button>
 

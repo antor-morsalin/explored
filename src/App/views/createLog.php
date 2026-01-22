@@ -46,9 +46,7 @@
         Journey type
       </label>
       <div class="relative">
-        <select
-          id="journey_type"
-          name="journey_type"
+        <select id="journey_type" name="journey_type"
           class="mt-2 w-full appearance-none rounded-lg border border-slate-300 px-4 py-3 text-base outline-none focus:border-black focus:ring-1 focus:ring-black bg-white transition-colors"
         >
           <option value="" disabled selected>Select one</option>
@@ -57,9 +55,6 @@
           <option value="family_travel">Family travel</option>
           <option value="picnic">Picnic</option>
         </select>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500 mt-2">
-            <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
-        </div>
       </div>
       <p id="type-error" class="mt-1 text-xs text-red-500 hidden"></p>
       <p class="mt-2 text-sm text-slate-600">
@@ -68,17 +63,11 @@
     </div>
 
     <div class="pt-4 flex items-center gap-3">
-      <button
-        type="submit"
-        class="rounded-lg bg-black px-6 py-3 text-sm font-medium text-white hover:bg-slate-900 transition-colors"
-      >
+      <button type="submit" class="rounded-lg bg-black px-6 py-3 text-sm font-medium text-white hover:bg-slate-900 transition-colors">
         Get started
       </button>
 
-      <a
-        href="/explored/logs"
-        class="rounded-lg border border-slate-300 px-6 py-3 text-sm font-medium hover:bg-slate-50 transition-colors"
-      >
+      <a href="/explored/logs" class="rounded-lg border border-slate-300 px-6 py-3 text-sm font-medium hover:bg-slate-50 transition-colors">
         Cancel
       </a>
     </div>
