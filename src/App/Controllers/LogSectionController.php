@@ -6,15 +6,19 @@
 
     use Framework\TemplateEngine;
     use App\Model\Database;
-    use App\Model\{LogSectionModel, UserModel};
-    use App\Middlewares\AuthMiddleware;
+    use App\Model\{LogSectionModel, LogModel, UserModel};
+    use App\Middlewares\{AuthMiddleWare, LogMiddleWare};
+
 
     class LogSectionController
     {
         private TemplateEngine $view ;
         private Database $db;
         private LogSectionModel $logSectionModel;
-        private AuthMiddleware $authMiddleware;
+        private LogModel $logModel;
+        private UserModel $userModel;
+        private AuthMiddleWare $authMiddleWare;
+
 
         public function __construct()
         {
@@ -22,14 +26,26 @@
             $this -> db = new Database();
             $conn = $this -> db -> connection();
             $this -> logSectionModel = new LogSectionModel($conn);
-            $this -> authMiddleware = new AuthMiddleware();
+            $this -> logModel = new LogModel($conn);
+            $this -> authMiddleWare = new AuthMiddleWare();
         }
 
         
         public function newSectionView()
         {
-            $this -> authMiddleware -> requireLogin();
-            $this -> authMiddleware -> requireUser();
+            $this -> authMiddleWare -> requireLogin();
+
+            $logId = $_GET['params']['id'];
+            $log = $this->logModel->getLog($logId);
+            $currentUserId = getAuth('userId');
+
+            // SECURITY CHECK: Only owner can see add form
+            if ($log['owner_id'] !== $currentUserId) {
+                setFlash('error', 'You cannot add sections to someone else\'s log.');
+                redirect("/explored/logs/{$logId}");
+                return;
+            }
+
             $this -> view -> addData('title', 'New Section');
             $logId = $_GET['params']['id'];
             $this -> view -> addData('logId', $logId);
@@ -38,10 +54,18 @@
 
         public function postNewSection()
         {
-            $this -> authMiddleware -> requireLogin();
-            $this -> authMiddleware -> requireUser();
+            $this -> authMiddleWare -> requireLogin();
+            $this -> authMiddleWare -> requireUser();
             $ownerId   = getAuth('userId');
             $logId     = $_GET['params']['id'];
+
+            $log = $this->logModel->getLog($logId);
+            if ($log['owner_id'] !== $ownerId) {
+                setFlash('error', 'You cannot add sections to someone else\'s log.');
+                redirect("/explored/logs/{$logId}");
+                return;
+            }
+
             $placeName = trim($_POST['place_name']);
             $placeType = trim($_POST['place_type']);
             $mapLink   = trim($_POST['map_link']);
