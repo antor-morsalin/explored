@@ -33,12 +33,13 @@
             foreach ($this->routes as $route) {
 
                 // method must match
-                if ($route['method'] !== $method) {
+                if ($route['method'] !== $method) 
+                {
                     continue;
                 }
 
-                // ---- PARAM ROUTE ONLY (Express-style :id) ----
-                if (str_contains($route['path'], ':')) {
+                if (str_contains($route['path'], ':')) 
+                {
 
                     // build regex from route path
                     $routeRegex = preg_replace('#:\w+#', '([^/]+)', $route['path']);
@@ -64,7 +65,7 @@
                     return;
                 }
 
-                // ---- STATIC ROUTES (your original logic) ----
+              
                 if (!preg_match("#^{$route['path']}$#", $path)) {
                     continue;
                 }

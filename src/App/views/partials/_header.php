@@ -34,6 +34,10 @@
         Logout
       </a>
     <?php else: ?>
+      <a href="/explored/register"
+         class="inline-flex items-center rounded-lg bg-while border border-black px-4 py-2 text-sm font-semibold text-black hover:bg-slate-800 hover:text-white transition shadow-sm">
+        Register
+      </a>
       <a href="/explored/login"
          class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition shadow-sm">
         Login
@@ -76,6 +80,7 @@
       <a href="/explored/logout" class="mt-2 text-red-600 font-semibold">Logout</a>
     <?php else: ?>
       <a href="/explored/login" class="mt-2 font-semibold">Login</a>
+      <a href="/explored/register" class="mt-2 font-semibold">Login</a>
     <?php endif; ?>
   </div>
 

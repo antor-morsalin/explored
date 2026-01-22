@@ -33,7 +33,7 @@
         <?php } ?>
         <?php if (isLoggedIn() && getAuth('role')=='user'){ ?>
         <?php if (!$log['published']){ ?>
-            <form action=<?php echo "/explored/logs/{$log['id']}/publish" ?> method="post" onsubmit="return confirm('Are you sure you want to publish this log? It will become visible to everyone.');">
+            <form action=<?php echo "/explored/logs/{$log['id']}/publish" ?> method="post">
                 <button class="mt-6 text-black w-full bg-white border border-black py-3 text-sm font-medium hover:bg-black hover:text-white transition">
                     Publish 
                 </button>
@@ -112,7 +112,7 @@
 
     <div class="flex flex-col gap-6 border-gray-300 lg:w-[360px] lg:shrink-0">
 
-        <!-- Prompt -->
+       
          <?php if (isLoggedIn() && getAuth('role')=='user'){ ?>
         <p class="text-base font-medium text-gray-800 text-xl">
             Leave your comment

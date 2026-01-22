@@ -35,8 +35,6 @@
         {
             $this -> authMiddleware -> requireNotLoggedIn();
             $this -> userModel -> register($_POST['username'], $_POST['password']);
-            setAuth('role', 'user');
-            setAuth('user', $_POST['username']);
             setFlash('message', "Welcome {$_POST['username']}, login to Explored!");
             redirect("/explored/login");
         }

@@ -68,9 +68,7 @@
         </label>
       </div>
 
-      <button
-        type="submit"
-        id="submit-btn"
+      <button type="submit" id="submit-btn"
         class="w-full rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 active:bg-slate-950 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Register
