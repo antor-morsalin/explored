@@ -37,7 +37,24 @@
 
             return $result->fetch_all(MYSQLI_ASSOC);
         }
-                
+
+        public function getComment(mixed $commentId)
+        {
+            $statement = $this->conn->prepare("SELECT * FROM comments WHERE id = ? LIMIT 1");
+            $statement->bind_param("i", $commentId);
+            $statement->execute();
+
+            $result = $statement->get_result()->fetch_assoc();
+
+            return $result ;
+        }
+
+        public function deleteComment(mixed $commentId)
+        {
+            $statement = $this->conn->prepare("DELETE FROM comments WHERE id = ? LIMIT 1");
+            $statement->bind_param("i", $commentId);
+            $statement->execute();
+        }
 
     }
     

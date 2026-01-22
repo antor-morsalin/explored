@@ -2,6 +2,20 @@
 
 <main class="max-w-4xl mx-auto px-6 py-12">
 
+    <?php if (!count($logs)) { ?>
+        <div class="mt-10 text-center text-slate-600">
+            <h2 class="text-2xl font-semibold text-slate-800 mb-2">
+                Your wishlist is empty
+            </h2>
+            <p class="text-sm mb-4">
+                You haven’t added any travel logs to your wishlist yet.
+            </p>
+            <p class="text-sm">
+                Start exploring and save the journeys you’d like to revisit later.
+            </p>
+        </div>
+    <?php } ?>
+
     <section class="space-y-8">
         <?php foreach ($logs as $log) { ?>
             <a href="<?php echo "/explored/logs/{$log['id']}"; ?>"

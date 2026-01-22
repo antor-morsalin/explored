@@ -12,6 +12,7 @@
     {   
         private TemplateEngine $view;  
         private UserModel $userModel;
+        private AuthMiddleware $authMiddleware;
         private mysqli $conn;
         
         public function __construct()
@@ -20,16 +21,19 @@
             $db = new Database();
             $this -> conn = $db -> connection();
             $this -> userModel = new UserModel($this -> conn);
+            $this -> authMiddleware = new AuthMiddleware();
         }
 
         public function registerView()
         {
+            $this -> authMiddleware -> requireNotLoggedIn();
             $this -> view -> addData('title', 'Registration');
             echo $this -> view -> render("register.php");
         }
 
         public function register()
         {
+            $this -> authMiddleware -> requireNotLoggedIn();
             $this -> userModel -> register($_POST['username'], $_POST['password']);
             setAuth('role', 'user');
             setAuth('user', $_POST['username']);
@@ -39,12 +43,14 @@
 
         public function loginView()
         {
+            $this -> authMiddleware -> requireNotLoggedIn();
             $this -> view -> addData('title', 'Login');
             echo $this -> view -> render("login.php");
         }
 
         public function login()
         {
+            $this -> authMiddleware -> requireNotLoggedIn();
             $username = $_POST['username'];
             $password = $_POST['password'];
             
@@ -87,10 +93,9 @@
             exit;
         }
 
-        
-
         public function logout() 
         {
+            $this -> authMiddleware -> requireLogin();
             logout();
         }
     }

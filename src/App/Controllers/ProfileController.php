@@ -44,14 +44,7 @@
             echo $this->view->render("profile/logs.php", ['user' => $this->user]);
         }
 
-        // 3. Wishlist Page
-        public function wishlistView()
-        {
-            
-
-            $this->view->addData('title', 'My Wishlist');
-            echo $this->view->render("profile/wishlist.php", ['user' => $this->user]);
-        }
+        
 
         // 4. Settings Page
         public function settingsView()

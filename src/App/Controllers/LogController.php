@@ -6,8 +6,8 @@
 
     use Framework\TemplateEngine;
     use App\Model\Database;
-    use App\Model\{LogModel, LogSectionModel, UserModel, CommentModel};
-    use App\Middlewares\LogMiddleWare;
+    use App\Model\{LogModel, LogSectionModel, UserModel, CommentModel, WishlistModel};
+    use App\Middlewares\{LogMiddleWare, AuthMiddleware};
 
     class LogController
     {
@@ -18,6 +18,8 @@
         private LogSectionModel $logSectionModel;
         private CommentModel $commentModel;
         private LogMiddleWare $logMiddleWare;
+        private WishlistModel $wishlistModel;
+        private AuthMiddleware $authMiddleware;
 
 
         public function __construct()
@@ -30,10 +32,14 @@
             $this -> logSectionModel = new LogSectionModel($conn);
             $this -> commentModel = new CommentModel($conn);
             $this -> logMiddleWare = new LogMiddleWare();
+            $this -> wishlistModel = new WishlistModel($conn);
+            $this -> authMiddleware = new AuthMiddleware();
         }
 
         public function logsView()
         {
+            $this -> authMiddleware -> requireLogin();
+            $this -> authMiddleware -> requireUser();
             $this -> view -> addData('title', 'Logs');
             $totalLogs = $this -> logModel -> getTotalLogs();
             $this -> view -> addData('totalLogs', $totalLogs);
@@ -44,13 +50,17 @@
         }
 
         public function createLogView()
-        {
+        {   
+            $this -> authMiddleware -> requireLogin();
+            $this -> authMiddleware -> requireUser();
             $this -> view -> addData('title', 'Create Logs');
             echo $this -> view -> render("createLog.php");
         }
 
         public function postLog()
         {
+            $this -> authMiddleware -> requireLogin();
+            $this -> authMiddleware -> requireUser();
             $this -> logMiddleWare -> validateLogData();
 
             $ownerId = getAuth('userId');
@@ -78,25 +88,34 @@
             $this -> view -> addData('title', 'Log');
             $log = $this -> getFullLog();
             $this -> view -> addData('log', $log);
+            $logId = $_GET['params']['id'];
 
-            $logSections = $this -> logSectionModel -> getAllLogSections($_GET['params']['id']);
+            $logSections = $this -> logSectionModel -> getAllLogSections($logId);
             $this -> view -> addData('logSections', $logSections);
 
-            $avgCost = $this -> logModel -> getAvgCost($_GET['params']['id']);
+            $avgCost = $this -> logModel -> getAvgCost($logId);
             $this -> view -> addData('avgCost', $avgCost);
 
-            $comments = $this -> commentModel -> getAllComments($_GET['params']['id']);
+            $comments = $this -> commentModel -> getAllComments($logId);
             foreach($comments as &$comment)
             {
                 $comment['ownerName'] = $this -> userModel -> getUserName($comment['owner_id']);
             }
             $this -> view -> addData('comments', $comments);
 
+            $avgRating = $this -> logModel -> getAvgRating($logId);
+            $this -> view -> addData('avgRating', round((float)$avgRating) );
+
+            $onWishlist = $this -> wishlistModel -> onWishList(getAuth('userId'), $logId);
+            $this -> view -> addData('onWishlist', $onWishlist);
+
             echo $this -> view -> render("log.php");
         }
 
         public function publishLog()
         {
+            $this -> authMiddleware -> requireLogin();
+            $this -> authMiddleware -> requireUser();   
             $logId = $_GET['params']['id'];
             $this -> logModel -> publishLog($logId);
             setFlash('success', "Your travel log was published and now all users can see it");
@@ -109,6 +128,8 @@
             foreach($logs as &$log)
             {
                 $log['avgCost'] = $this -> logModel -> getAvgCost($log['id']);
+                $log['avgRating'] = round((float) $this -> logModel -> getAvgRating($log['id']));
+                $log['ownerName'] = $this -> userModel -> getUserName($log['owner_id']); 
             }
             $this -> view -> addData('title', "Explore");
             $this -> view -> addData('logs', $logs);
@@ -116,8 +137,6 @@
         }
 
     
-
-
     }
 
 

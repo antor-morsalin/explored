@@ -40,12 +40,6 @@
   <section class="pt-10">
     <div class="flex items-center justify-between">
       <h2 class="text-lg font-medium">My logs</h2>
-
-      <select class="rounded-lg border px-4 py-2 text-sm">
-        <option>Newest</option>
-        <option>Oldest</option>
-        <option>A–Z</option>
-      </select>
     </div>
   
     <div class="mt-6 max-h-[560px] overflow-y-auto space-y-4">

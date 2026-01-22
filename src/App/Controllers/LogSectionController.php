@@ -7,14 +7,14 @@
     use Framework\TemplateEngine;
     use App\Model\Database;
     use App\Model\{LogSectionModel, UserModel};
-
+    use App\Middlewares\AuthMiddleware;
 
     class LogSectionController
     {
         private TemplateEngine $view ;
         private Database $db;
         private LogSectionModel $logSectionModel;
-
+        private AuthMiddleware $authMiddleware;
 
         public function __construct()
         {
@@ -22,11 +22,14 @@
             $this -> db = new Database();
             $conn = $this -> db -> connection();
             $this -> logSectionModel = new LogSectionModel($conn);
+            $this -> authMiddleware = new AuthMiddleware();
         }
 
         
         public function newSectionView()
         {
+            $this -> authMiddleware -> requireLogin();
+            $this -> authMiddleware -> requireUser();
             $this -> view -> addData('title', 'New Section');
             $logId = $_GET['params']['id'];
             $this -> view -> addData('logId', $logId);
@@ -35,6 +38,8 @@
 
         public function postNewSection()
         {
+            $this -> authMiddleware -> requireLogin();
+            $this -> authMiddleware -> requireUser();
             $ownerId   = getAuth('userId');
             $logId     = $_GET['params']['id'];
             $placeName = trim($_POST['place_name']);

@@ -6,7 +6,7 @@
     require __DIR__ . "/../vendor/autoload.php";
 
     use Framework\App;
-    use App\Controllers\{HomeController, AuthController, AdminController, LogController, ProfileController, LogSectionController, CommentController};
+    use App\Controllers\{HomeController, AuthController, AdminController, LogController, ProfileController, LogSectionController, CommentController, WishlistController};
 
     $app = new App();
 
@@ -38,7 +38,7 @@
     
     // --- PROFILE ROUTES ---
     $app -> get('/explored/profile', [ProfileController::class, 'indexView']);
-    $app -> get('/explored/profile/wishlist', [ProfileController::class, 'wishlistView']);
+    
     $app -> get('/explored/profile/settings', [ProfileController::class, 'settingsView']);
     $app -> post('/explored/profile/password', [ProfileController::class, 'updatePassword']);
 
@@ -65,9 +65,13 @@
 
     //Comments
     $app -> post('/explored/comment/:id', [CommentController::class, 'postComment']);
+    $app -> post('/explored/comment/:id/delete', [CommentController::class, 'deleteComment']);
 
 
-
+    //wishlist
+    $app -> get('/explored/wishlist', [WishlistController::class, 'wishlistView']);
+    $app -> post('/explored/wishlist/:id', [WishlistController::class, 'addToWishlist']);
+    $app -> post('/explored/wishlist/:id/delete', [WishlistController::class, 'removeFromWishlist']);
 
     
     $app->run();

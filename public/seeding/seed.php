@@ -13,6 +13,8 @@ $conn->select_db("explored");
 
 
 
+$conn->query("DROP TABLE IF EXISTS wishlist");
+$conn->query("DROP TABLE IF EXISTS comments");
 $conn->query("DROP TABLE IF EXISTS log_sections");
 $conn->query("DROP TABLE IF EXISTS travel_logs");
 $conn->query("DROP TABLE IF EXISTS contact_messages");
@@ -145,10 +147,37 @@ $conn->query("
 ");
 
 
+// TABLE 6: WISHLIST
+$conn->query("
+    CREATE TABLE wishlist (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        log_id INT NOT NULL,
+
+        CONSTRAINT wishlist_user
+            FOREIGN KEY (user_id)
+            REFERENCES users(id)
+            ON DELETE CASCADE,
+
+        CONSTRAINT wishlist_log
+            FOREIGN KEY (log_id)
+            REFERENCES travel_logs(id)
+            ON DELETE CASCADE,
+
+        CONSTRAINT unique_wishlist
+            UNIQUE (user_id, log_id)
+    ) ENGINE=InnoDB
+");
+
+
+
 echo "Seeding completed successfully!\n";
 echo "- 'users' table created with 'role' column.\n";
 echo "- 'contact_messages' table created.\n";
 echo "- 'travel_logs' table created.\n";
 echo "- 'log_sections' table created.\n";
 echo "- 'comments' table created.\n";
+echo "- 'wishlist' table created.\n";
+
+
 ?>

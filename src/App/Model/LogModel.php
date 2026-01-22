@@ -131,6 +131,26 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
+        public function getAvgRating(mixed $logId)
+        {
+            $statement = $this->conn->prepare(
+                "SELECT AVG(rating) AS avg_rating 
+                FROM log_sections 
+                WHERE log_id = ?"
+            );
+
+            $statement->bind_param("i", $logId);
+            $statement->execute();
+
+            $result = $statement->get_result()->fetch_assoc();
+            
+            if(!$result['avg_rating'])
+            {
+                return 0 ;
+            }
+
+            return $result['avg_rating'] ;
+        }
 
     }
     

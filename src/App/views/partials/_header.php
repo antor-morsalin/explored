@@ -21,7 +21,7 @@
       <a href="/explored/explore" class="hover:text-slate-900 transition">Explore</a>
       
       <?php if (isLoggedIn()): ?>
-        <a href="/explored/profile/wishlist" class="hover:text-slate-900 transition">Wishlist</a>
+        <a href="/explored/wishlist" class="hover:text-slate-900 transition">Wishlist</a>
         <a href="/explored/profile/settings" class="hover:text-slate-900 transition">Settings</a>
       <?php endif; ?>
     </div>

@@ -9,13 +9,14 @@
             <?php echo $log['title']; ?>    
         </h1>
 
-        <h3 class="text-xl font-semibold">Average cost per person ৳<?php echo $avgCost; ?></h5>
+        <h3 class="text-xl font-semibold">Average cost per person ৳<?php echo $avgCost; ?></h3>
+        <h3 class="text-xl font-semibold">Overall Rating: <?php echo $avgRating; ?>/5 </h3>
 
         <!-- Meta info -->
         <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
             <span><?php echo $log['ownerName']; ?></span>
             <span class="hidden sm:inline">•</span>
-            <span><?php echo $log['created_at']; ?></span>
+            <span><?php echo $log['created_at']; ?></span>      
             <span class="hidden sm:inline">•</span>
             <span><?php echo $log['journey_type']; ?></span>
         </div>
@@ -39,8 +40,19 @@
                     Publish 
                 </button>
             </form>
+        <?php } else if(!$onWishlist) { ?>
+            <form action=<?php echo "/explored/wishlist/{$log['id']}" ?> method="post">
+                <button class="w-full rounded-2xl bg-white border border-black py-4 text-sm font-medium text-black hover:bg-black hover:text-white transition">
+                    Add to Wish List
+                </button>
+            </form>
+        <?php } else { ?>
+            <form action=<?php echo "/explored/wishlist/{$log['id']}/delete" ?> method="post">
+                <button class="w-full rounded-2xl bg-white border border-black py-4 text-sm font-medium text-black hover:bg-black hover:text-white transition">
+                    Remove from wishlist
+                </button>
+            </form>
         <?php } ?>
-
         <div class="max-w-5xl">
             <h2 class="text-2xl font-semibold tracking-tight mb-6">
                 Visited destinations
@@ -144,9 +156,17 @@
                             <span class="font-medium"><?php echo $comment['ownerName']; ?></span>
                             <span class="text-gray-500"><?php echo $comment['created_at']; ?></span>
                         </div>
-                        <p class="text-sm text-gray-700 leading-relaxed">
-                            <?php echo $comment['comment']; ?>
-                        </p>
+                        <div class="flex intems-center justify-between">
+                            <p class="text-sm text-gray-700 leading-relaxed">
+                                <?php echo $comment['comment']; ?>
+                            </p>
+                            <?php if (getAuth('userId') == $comment['owner_id']) { ?>
+                                <form action=<?php echo "/explored/comment/{$comment['id']}/delete" ?> method="post">
+                                    <button type="submit" class="inline-flex h-5 w-5 items-center justify-center rounded bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-xs" aria-label="Delete" title="Delete">×</button>
+                                </form>
+                            <?php } ?>
+                        </div>
+
                     </div>
                 <?php } ?>
 
