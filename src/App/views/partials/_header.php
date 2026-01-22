@@ -86,7 +86,7 @@
 
   <?php $message = flash('message'); if ($message) { ?>
   <div id="message"
-      class="fixed top-[60px  ] right-6 z-50 max-w-sm rounded-xl border border-blue-200
+      class="fixed top-[60px] right-6 z-50 max-w-sm rounded-xl border border-blue-200
               bg-white px-5 py-4 text-sm text-blue-900 shadow-lg">
       <div class="flex items-start gap-3">
           <span class="mt-1 h-2 w-2 rounded-full bg-blue-500"></span>
