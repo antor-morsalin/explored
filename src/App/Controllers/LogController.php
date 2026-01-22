@@ -89,7 +89,7 @@ use Framework\TemplateEngine;
         public function logView()
         {
             $this -> authMiddleware -> requireLogin();
-            $this -> authMiddleware -> requireUser();
+            // $this -> authMiddleware -> requireUser();
             $this -> view -> addData('title', 'Log');
             $log = $this -> getFullLog();
 
