@@ -29,6 +29,14 @@
             $this -> authMiddleware -> requireUser();
             $comment = $_POST['comment'];
             $logId = $_GET['params']['id'];
+            
+            if (!isLoggedIn()) {
+                setFlash('error', 'Only a valid user can comment on the post');
+                redirect("/explored/logs/{$logId}");
+                return;
+            }
+
+            $comment = $_POST['comment'];
             $userId = getAuth('userId');
             $this -> commentModel -> saveComment($userId, $comment, $logId);
             setFlash('success', 'Comment posted successfully');

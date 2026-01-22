@@ -56,9 +56,12 @@
       </section>
 
       <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row gap-4">
+        <?php if (!isLoggedIn()): ?>
         <a href="/explored/register" class="flex-1 bg-slate-900 text-white text-center py-3 rounded-xl font-semibold hover:bg-slate-800 transition-colors">
           Create Account
         </a>
+        <?php endif; ?>
+        
         <a href="/explored" class="flex-1 bg-white border border-slate-300 text-slate-700 text-center py-3 rounded-xl font-semibold hover:bg-slate-50 transition-colors">
           Back to Home
         </a>

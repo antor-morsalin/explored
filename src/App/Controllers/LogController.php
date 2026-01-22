@@ -4,7 +4,8 @@
 
     namespace App\Controllers;
 
-    use Framework\TemplateEngine;
+use App\Middlewares\AuthMiddleware;
+use Framework\TemplateEngine;
     use App\Model\Database;
     use App\Model\{LogModel, LogSectionModel, UserModel, CommentModel, WishlistModel};
     use App\Middlewares\{LogMiddleWare, AuthMiddleware};
@@ -57,7 +58,7 @@
             echo $this -> view -> render("createLog.php");
         }
 
-        public function postLog()
+        public function postLog()  
         {
             $this -> authMiddleware -> requireLogin();
             $this -> authMiddleware -> requireUser();
@@ -78,6 +79,8 @@
         {
             $logId = $_GET['params']['id'];
             $log = $this -> logModel -> getLog($logId);
+
+            if(!$log) redirect('/explored/explore');
             $ownerName = $this -> userModel -> getUserName($log['owner_id']);
             $log['ownerName'] = $ownerName;
             return $log;
@@ -87,6 +90,15 @@
         {
             $this -> view -> addData('title', 'Log');
             $log = $this -> getFullLog();
+
+            $currentUserId = getAuth('userId'); // Returns null if guest
+            
+            if ($log['published'] == 0 && $log['owner_id'] !== $currentUserId) {
+                setFlash('error', 'This log is private or does not exist.');
+                redirect('/explored/explore');
+                return;
+            }
+
             $this -> view -> addData('log', $log);
             $logId = $_GET['params']['id'];
 
